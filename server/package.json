@@ -2,11 +2,25 @@
   "name": "Once Upon a Page",
   "version": "1.0.0",
   "description": "e-commerce book store",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "sequelize-cli": "^6.6.0"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "http-errors": "^2.0.0",
+    "morgan": "^1.10.0",
+    "pg": "^8.10.0",
+    "sequelize": "^6.29.1"
+  }
 }
