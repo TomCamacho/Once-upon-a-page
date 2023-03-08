@@ -2,7 +2,7 @@
 
 import { Model, DataTypes } from "sequelize";
 
-import connection from "../db/index.js";
+import connection from "../index.js";
 
 class Book extends Model {
   static init(aConnection) {
@@ -59,3 +59,5 @@ class Book extends Model {
 }
 
 Book.init(connection);
+
+export default Book;
