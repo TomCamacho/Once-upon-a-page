@@ -10,9 +10,9 @@ import {
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Input from "../../commons/Input/Input";
-//import { useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-//import { logIn } from "../../state/user";
+import logIn from "../../store/user";
 import { message } from "antd";
 
 //GOOGLE__________________________________________________
@@ -28,7 +28,7 @@ const initialFormState = {
 
 function Auth() {
   // Redux
-  //const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   // Navigation
   const navigate = useNavigate();
@@ -52,11 +52,10 @@ function Auth() {
       axios
         .post("/register", formData)
         .then((newUser) => {
-          localStorage.setItem("profile", JSON.stringify(newUser.data));
           message.success(
             `New user (${newUser.data.name}) created successfully!`
           );
-          navigate("/");
+          navigate("/login");
         })
         .catch((err) => message.error(err.message));
     } else {
@@ -64,7 +63,7 @@ function Auth() {
       axios
         .post("/login", formData)
         .then((existingUser) => {
-          //dispatch(logIn(existingUser));
+          dispatch(logIn(existingUser));
           localStorage.setItem("profile", JSON.stringify(existingUser.data));
           message.success(
             `Successful login! Welcome back ${existingUser.data.name}`
@@ -144,19 +143,18 @@ function Auth() {
           <Grid container spacing={2}>
             {signUp && (
               <>
-                <Input
+                {/* <Input
                   name="name"
                   label="Name"
                   handleChange={handleChange}
                   autoFocus
                   half
                   type="text"
-                />
+                /> */}
                 <Input
-                  name="lastname"
-                  label="Lastname"
+                  name="displayName"
+                  label="Username"
                   handleChange={handleChange}
-                  half
                   type="text"
                 />
               </>
