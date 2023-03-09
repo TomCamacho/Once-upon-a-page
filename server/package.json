@@ -11,8 +11,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "eslint": "^8.35.0",
     "mocha": "^10.2.0",
     "nodemon": "^2.0.21",
+    "prettier": "^2.8.4",
     "sequelize-cli": "^6.6.0"
   },
   "dependencies": {

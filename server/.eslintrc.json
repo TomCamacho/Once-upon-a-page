@@ -1,0 +1,17 @@
+{
+  "env": {
+    "es2022": true,
+    "node": true
+  },
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "rules": {
+    "comma-dangle": [
+      "error",
+      { "arrays": "always-multiline", "objects": "always-multiline" }
+    ],
+    "semi": "off"
+  }
+}
