@@ -1,13 +1,13 @@
-"use strict";
+'use strict'
 
-import { Model, DataTypes } from "sequelize";
+import { Model, DataTypes } from 'sequelize'
 
-import connection from "../index.js";
+import connection from '../index.js'
 
 class Book extends Model {
   static init(aConnection) {
     const schema = {
-      name: {
+      title: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -29,35 +29,35 @@ class Book extends Model {
         type: DataTypes.INTEGER,
         defaultValue: 0,
       },
-    };
+    }
 
     const defaultScope = {
       attributes: {
-        exclude: ["id"],
+        exclude: ['id'],
       },
-    };
+    }
 
     const scopes = {
       everything: {
         attributes: {},
       },
-    };
+    }
 
     return super.init(schema, {
       defaultScope,
       scopes,
       sequelize: aConnection,
-    });
+    })
   }
 
   // See nonybrighto's comment in https://stackoverflow.com/a/48357983/8706387
   toJSON() {
-    const BookForClient = this.get({ clone: true });
-    ["id"].forEach((key) => delete BookForClient[key]);
-    return BookForClient;
+    const BookForClient = this.get({ clone: true })
+    ;['id'].forEach(key => delete BookForClient[key])
+    return BookForClient
   }
 }
 
-Book.init(connection);
+Book.init(connection)
 
-export default Book;
+export default Book
