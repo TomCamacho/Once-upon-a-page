@@ -60,7 +60,7 @@ const seed = [
     authors: ["Ashley Herring Blake"],
     rating: 2.39,
     price: 2899,
-    images: ["https://i.postimages.cc/qdbn0hrs/hecha-de-estrellas.jpg"],
+    images: ["https://www.tematika.com/media/catalog/Ilhsa/Imagenes/665999.jpg"],
     numberOfOrders: 0,
     genres: ["novella"],
     publishingHouse: "vr ya",
