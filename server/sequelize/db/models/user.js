@@ -37,6 +37,16 @@ class User extends Model {
       },
     }
 
+    const hooks = {
+      afterValidate: user => {
+        const salt = bcrypt.genSaltSync()
+        user.salt = salt
+        return user.hash(user.password, salt).then(hash => {
+          user.password = hash
+        })
+      },
+    }
+
     const defaultScope = {
       attributes: {
         exclude: ['id', 'password', 'salt', 'createdAt', 'updatedAt'],
@@ -52,8 +62,19 @@ class User extends Model {
     return super.init(schema, {
       defaultScope,
       scopes,
+      hooks,
       sequelize: aConnection,
     })
+  }
+
+  hash(password, salt) {
+    return bcrypt.hash(password, salt)
+  }
+
+  hasPassword(stringToValidate) {
+    return this.hash(stringToValidate, this.salt).then(
+      newHash => newHash === this.password
+    )
   }
 
   // See nonybrighto's comment in https://stackoverflow.com/a/48357983/8706387
