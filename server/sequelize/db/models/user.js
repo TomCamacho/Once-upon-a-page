@@ -1,6 +1,7 @@
 'use strict'
 
 import { Model, DataTypes } from 'sequelize'
+import bcrypt from 'bcrypt'
 
 import connection from '../index.js'
 
@@ -35,10 +36,13 @@ class User extends Model {
           },
         },
       },
+      salt: {
+        type: DataTypes.STRING,
+      },
     }
 
     const hooks = {
-      afterValidate: user => {
+      beforeValidate: user => {
         const salt = bcrypt.genSaltSync()
         user.salt = salt
         return user.hash(user.password, salt).then(hash => {
@@ -72,6 +76,7 @@ class User extends Model {
   }
 
   hasPassword(stringToValidate) {
+    console.log(this)
     return this.hash(stringToValidate, this.salt).then(
       newHash => newHash === this.password
     )
@@ -80,7 +85,7 @@ class User extends Model {
   // See nonybrighto's comment in https://stackoverflow.com/a/48357983/8706387
   toJSON() {
     const userForClient = this.get({ clone: true })
-    ;['id', 'password', 'createdAt', 'updatedAt'].forEach(
+    ;['id', 'password', 'salt', 'createdAt', 'updatedAt'].forEach(
       key => delete userForClient[key]
     )
     return userForClient

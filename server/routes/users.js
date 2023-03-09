@@ -27,7 +27,7 @@ router.put('/:id', (req, res) => {
 
 router.post('/login', (req, res) => {
   const { email, password } = req.body
-  User.findOne({ where: { email } }).then(user => {
+  User.scope('everything').findOne({ where: { email } }).then(user => {
     if (!user) return res.sendStatus(401)
 
     user.hasPassword(password).then(passwordMatches => {
@@ -35,17 +35,13 @@ router.post('/login', (req, res) => {
 
       const payload = {
         email: user.email,
-        name: user.name,
+        fullName: user.fullName,
       }
       const token = generateToken(payload)
       res.cookie('token', token)
       res.send(payload)
     })
   })
-})
-
-router.get('/secret', validateAuth, (req, res) => {
-  res.send(req.user)
 })
 
 router.get('/me', validateAuth, (req, res) => {
