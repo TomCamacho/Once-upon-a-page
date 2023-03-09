@@ -2,7 +2,7 @@
 
 import { Model, DataTypes } from 'sequelize'
 
-import connection from '../db/index.js'
+import connection from '../index.js'
 
 class User extends Model {
   static init(aConnection) {
@@ -52,7 +52,6 @@ class User extends Model {
     return super.init(schema, {
       defaultScope,
       scopes,
-      hooks,
       sequelize: aConnection,
     })
   }
@@ -68,3 +67,5 @@ class User extends Model {
 }
 
 User.init(connection)
+
+export default User
