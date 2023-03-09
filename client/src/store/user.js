@@ -6,6 +6,8 @@ export const logOut = createAction("LOG_OUT");
 const initialState = {
   id: 1,
   displayName: "Homero",
+  email: "homero@gmail.com",
+  password: "1234"
 };
 
 const userReducer = createReducer(initialState, {
