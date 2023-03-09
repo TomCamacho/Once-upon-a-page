@@ -3,7 +3,7 @@ import { ValidationError } from 'sequelize'
 
 import User from '../sequelize/db/models/user.js'
 import { generateToken } from '../config/tokens.js'
-import { validateAuth } from '../middlewares/auth.js'
+import { validateAuth } from '../middleware/auth.js'
 
 const router = Router()
 
