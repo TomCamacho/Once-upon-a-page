@@ -28,10 +28,14 @@ router.put('/:id', (req, res) => {
 router.post('/login', (req, res) => {
   const { email, password } = req.body
   User.scope('everything').findOne({ where: { email } }).then(user => {
-    if (!user) return res.sendStatus(401)
+    if (!user) return res.status(401).send({
+      message: 'invalid credentials'
+    })
 
     user.hasPassword(password).then(passwordMatches => {
-      if (!passwordMatches) return res.sendStatus(401)
+      if (!passwordMatches) return res.status(401).send({
+        message: 'invalid credentials'
+      })
 
       const payload = {
         email: user.email,
