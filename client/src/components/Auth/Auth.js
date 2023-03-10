@@ -12,8 +12,8 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Input from "../../commons/Input/Input";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import logIn from "../../store/user";
 import { message } from "antd";
+import { logIn } from "../../store/user";
 
 //GOOGLE__________________________________________________
 //import { GoogleLogin, GoogleLogout } from "react-google-login";
@@ -41,12 +41,11 @@ function Auth() {
   const handleShowPassword = () => setShowPassword((prev) => !prev); // toggle show password
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.fullName]: e.target.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("DATOS DEL FORM:", formData);
     if (signUp) {
       axios
         .post("/user/register", formData)
@@ -58,12 +57,13 @@ function Auth() {
         })
         .catch((err) => message.error(err.message));
     } else {
-      console.log("DATOS DEL FORM:", formData);
       axios
         .post("/user/login", formData)
         .then((existingUser) => {
-          dispatch(logIn(existingUser));
+          dispatch(logIn(existingUser.data));
+
           localStorage.setItem("profile", JSON.stringify(existingUser.data));
+
           message.success(
             `Successful login! Welcome back ${existingUser.data.fullName}`
           );

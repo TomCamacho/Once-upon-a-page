@@ -30,9 +30,7 @@ const Navbar = () => {
   const handleLogOut = () => {
     dispatch(logOut(reduxUser));
     localStorage.removeItem("profile");
-    message.success(
-      `Successful logout: See you around ${reduxUser.displayName}!`
-    );
+    message.success(`Successful logout: See you around ${reduxUser.fullName}!`);
     //localStorage.removeItem("id");
     //localStorage.removeItem("userName");
     navigate("/");
@@ -85,11 +83,11 @@ const Navbar = () => {
                 Log Out
               </Button>
               <Link
-                href={`userData/${reduxUser.id}`}
+                href={`userData/${reduxUser.fullName}`}
                 style={{ textDecoration: "none", color: "white" }}
               >
                 <Avatar sx={{ bgcolor: "#5a91c7" }}>
-                  {reduxUser.displayName
+                  {reduxUser.fullName
                     .split(" ")
                     .map((word) => word.charAt(0))
                     .join("")}

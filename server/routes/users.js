@@ -27,25 +27,31 @@ router.put('/:id', (req, res) => {
 
 router.post('/login', (req, res) => {
   const { email, password } = req.body
-  User.scope('everything').findOne({ where: { email } }).then(user => {
-    if (!user) return res.status(401).send({
-      message: 'invalid credentials'
-    })
+  User.scope('everything')
+    .findOne({ where: { email } })
+    .then(user => {
+      if (!user)
+        return res.status(401).send({
+          message: 'invalid credentials',
+        })
 
-    user.hasPassword(password).then(passwordMatches => {
-      if (!passwordMatches) return res.status(401).send({
-        message: 'invalid credentials'
+      user.hasPassword(password).then(passwordMatches => {
+        if (!passwordMatches)
+          return res.status(401).send({
+            message: 'invalid credentials',
+          })
+
+        const payload = {
+          email: user.email,
+          fullName: user.fullName,
+        }
+        const token = generateToken(payload)
+        console.log('TOKEN', token)
+        res.cookie('token', token)
+        console.log('RES.COOKIE', res.cookie)
+        res.send(payload)
       })
-
-      const payload = {
-        email: user.email,
-        fullName: user.fullName,
-      }
-      const token = generateToken(payload)
-      res.cookie('token', token)
-      res.send(payload)
     })
-  })
 })
 
 router.get('/me', validateAuth, (req, res) => {
