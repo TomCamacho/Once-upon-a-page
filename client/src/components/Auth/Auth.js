@@ -129,7 +129,7 @@ function Auth() {
         <Avatar
           style={{
             margin: "1rem",
-            backgroundColor: "blue",
+            backgroundColor: "#0F2830",
           }}
         >
           <LockOutlinedIcon />
@@ -173,7 +173,7 @@ function Auth() {
             )}
           </Grid>
           <Button
-            style={{ marginTop: "1rem" }}
+            style={{ marginTop: "1rem", backgroundColor: "#014751" }}
             type="submit"
             fullWidth
             variant="contained"
@@ -188,7 +188,11 @@ function Auth() {
                 fullWidth
                 variant="outlined"
                 color="primary"
-                style={{ marginTop: "1rem" }}
+                style={{
+                  marginTop: "1rem",
+                  backgroundColor: "#D2C4FB",
+                  color: "white",
+                }}
               >
                 {signUp
                   ? "Have an account? Log In"

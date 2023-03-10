@@ -14,29 +14,6 @@ const Cart = () => {
 
   const reduxCart = useSelector((state) => state.cart);
 
-  /*  const [products, setProducts] = useState([
-    {
-      id: 1,
-      name: "Al final mueren los dos",
-      images: [
-        "https://www.tematika.com/media/catalog/Ilhsa/Imagenes/646539.jpg",
-      ],
-      price: 3490,
-      weight: 300,
-      units: 1,
-    },
-    {
-      id: 2,
-      name: "La sombra del viento",
-      images: [
-        "https://www.tematika.com/media/catalog/product/l/a/la_sombra_del_viento_1.jpg",
-      ],
-      price: 4590,
-      weight: 400,
-      units: 2,
-    },
-  ]);
- */
   const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
@@ -72,10 +49,31 @@ const Cart = () => {
           Total: USD {totalPrice.toFixed(2)}
         </Typography>
         <Stack direction="row">
-          <Button variant="contained" onClick={handleCheckOut}>
+          <Button
+            sx={{
+              backgroundColor: "#D2C4FB",
+              "&:hover": {
+                backgroundColor: "#D2C4FB",
+                cursor: "pointer",
+              },
+            }}
+            variant="contained"
+            onClick={handleCheckOut}
+          >
             Check Out
           </Button>
-          <Button variant="outlined" onClick={handleDeleteCart}>
+          <Button
+            sx={{
+              backgroundColor: "#0F2830",
+              color: "white",
+              "&:hover": {
+                backgroundColor: "#0F2830",
+                cursor: "pointer",
+              },
+            }}
+            variant="outlined"
+            onClick={handleDeleteCart}
+          >
             Delete Cart
           </Button>
         </Stack>

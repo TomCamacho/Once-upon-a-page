@@ -114,11 +114,11 @@ const BooksDetails = () => {
           <Typography variant="body1" color="text.secondary">
             {showMore
               ? seed[id].description
-              : `${seed[id].description.substring(0, 300)}...`}
+              : `${seed[id].description.substring(0, 150)}...`}
           </Typography>
         </Box>
         <Box>
-          {seed[id].description.length > 300 && (
+          {seed[id].description.length > 150 && (
             <Link
               component="button"
               variant="body2"

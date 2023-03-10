@@ -12,8 +12,9 @@ import {
 } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { logOut } from "../../store/user";
-
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useNavigate } from "react-router";
+import { useHistory } from "react-router-dom";
 
 const Navbar = () => {
   //const token = localStorage.getItem("profile");
@@ -54,7 +55,7 @@ const Navbar = () => {
   // }, []);
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: "#1976d3" }}>
+    <AppBar position="static" sx={{ backgroundColor: "#014751" }}>
       <Toolbar sx={{ justifyContent: "space-between" }}>
         <IconButton
           edge="start"
@@ -86,7 +87,12 @@ const Navbar = () => {
                 gap: "0.5rem",
               }}
             >
-              <Button color="error" variant="contained" onClick={handleLogOut}>
+              <Button
+                color="error"
+                sx={{ backgroundColor: "#0F2830" }}
+                variant="contained"
+                onClick={handleLogOut}
+              >
                 Log Out
               </Button>
               <Link
@@ -105,11 +111,19 @@ const Navbar = () => {
         ) : (
           <div>
             <Button
-              color="success"
+              sx={{ backgroundColor: "#0F2830" }}
               variant="contained"
               onClick={() => navigate("/login")}
             >
               Log In
+            </Button>
+            <Button
+              sx={{ backgroundColor: "#D2C4FB" }}
+              variant="contained"
+              startIcon={<ShoppingCartIcon />}
+              onClick={() => navigate("/cart")}
+            >
+              Cart
             </Button>
           </div>
         )}

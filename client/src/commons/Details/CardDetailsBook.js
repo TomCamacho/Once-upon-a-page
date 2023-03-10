@@ -1,7 +1,24 @@
 import React from "react";
 import { Box, Button, Grid } from "@mui/material";
+import { newProduct } from "../../store/cart";
+import { useDispatch } from "react-redux";
+import { message } from "antd";
 
 const CardDetailsBook = ({ data }) => {
+  const dispatch = useDispatch();
+  const handleClick = () => {
+    let addToCart = {
+      id: data.id,
+      name: data.title,
+      images: data.images,
+      price: data.price,
+      weight: data.weight,
+      units: 1,
+    };
+    dispatch(newProduct(addToCart));
+    message.success(`The product was added to the cart`);
+  };
+
   return (
     <Grid>
       <Box
@@ -54,15 +71,16 @@ const CardDetailsBook = ({ data }) => {
             borderBottomRightRadius: "8px",
           }}
         >
-          <h4 style={{ margin: 0, marginBottom: "8px", color: "#DD6031" }}>
-            {`USD ${(data.price / 100).toFixed(2) }`}
+          <h4 style={{ margin: 0, marginBottom: "8px", color: "black" }}>
+            {`USD ${(data.price / 100).toFixed(2)}`}
           </h4>
         </Box>
       </Box>
       <Button
+        onClick={handleClick}
         variant="contained"
         sx={{
-          backgroundColor: "#fff",
+          backgroundColor: "#D2C4FB",
           color: "#658E9C",
           textTransform: "none",
           borderRadius: "20px",

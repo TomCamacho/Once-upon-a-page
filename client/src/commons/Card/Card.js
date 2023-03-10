@@ -1,11 +1,24 @@
 import { Box } from "@mui/material";
 import { Rating, Button } from "@mui/material";
 import { useNavigate } from "react-router";
+import { newProduct } from "../../store/cart";
+import { useDispatch } from "react-redux";
+import { message } from "antd";
 
 const Card = ({ data }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleClick = () => {
-    console.log("agregar al cart");
+    let addToCart = {
+      id: data.id,
+      name: data.title,
+      images: data.images,
+      price: data.price,
+      weight: data.weight,
+      units: 1,
+    };
+    dispatch(newProduct(addToCart));
+    message.success(`The product was added to the cart`);
   };
 
   return (
@@ -18,7 +31,7 @@ const Card = ({ data }) => {
           justifyContent: "center",
           width: "200px",
           height: "400px",
-          margin: "10px",
+          margin: "10px auto",
           borderRadius: "2px",
           boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.1)",
           transition: "box-shadow 0.3s ease-in-out",
@@ -66,7 +79,7 @@ const Card = ({ data }) => {
           }}
         >
           <h4
-            onClick={() => navigate(`${data.id}`)}
+            onClick={() => navigate(`book/${data.id}`)}
             sx={{
               margin: 0,
               marginBottom: "8px",
@@ -80,23 +93,29 @@ const Card = ({ data }) => {
             data.price / 100
           ).toFixed(2)}`}</h5>
         </Box>
-        <Button
-          onClick={handleClick}
-          variant="contained"
-          sx={{
-            backgroundColor: "#D2C4FB",
-            color: "#658E9C",
-            textTransform: "none",
-            width: "100%",
-            "&:hover": {
-              backgroundColor: "#658E9C",
-              color: "#fff",
-            },
-          }}
-        >
-          Add to Cart
-        </Button>
       </Box>
+      <Button
+        onClick={handleClick}
+        variant="contained"
+        sx={{
+          display: "flex",
+          backgroundColor: "#D2C4FB",
+          color: "#658E9C",
+          margin: "10px auto",
+          textTransform: "none",
+          width: "110%",
+          
+          "&:hover": {
+            backgroundColor: "#658E9C",
+            color: "#fff",
+          },
+          "@media (max-width: 811px)": {
+            width: "57%", 
+          }
+        }}
+      >
+        Add to Cart
+      </Button>
     </div>
   );
 };

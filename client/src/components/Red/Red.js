@@ -33,10 +33,7 @@ const Red = () => {
           {books?.map((book, i) => {
             return (
               <Grid item xs={12} sm={6} md={4} lg={3} key={i}>
-                {/* <Typography onClick={() => navigate(`${book.id}`)}>*/}
-                  <Card data={book} />
-                  {/*</Typography> */}
-                
+                <Card data={book} />
               </Grid>
             );
           })}
