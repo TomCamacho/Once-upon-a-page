@@ -22,15 +22,22 @@ const Navbar = () => {
 
   const dispatch = useDispatch();
 
-  const reduxUser = useSelector((state) => state.user);
+  const localStorageUser = JSON.parse(localStorage.getItem("profile"));
+  const reduxStateUser = useSelector((state) => state.user);
+
+  let user;
+
+  localStorageUser !== null
+    ? (user = localStorageUser)
+    : (user = reduxStateUser);
 
   //const [user, setUser] = useState();
   const navigate = useNavigate();
 
   const handleLogOut = () => {
-    dispatch(logOut(reduxUser));
+    dispatch(logOut(user));
     localStorage.removeItem("profile");
-    message.success(`Successful logout: See you around ${reduxUser.fullName}!`);
+    message.success(`Successful logout: See you around ${user.fullName}!`);
     //localStorage.removeItem("id");
     //localStorage.removeItem("userName");
     navigate("/");
@@ -63,7 +70,7 @@ const Navbar = () => {
         >
           Once Upon A Page
         </Typography>
-        {reduxUser ? (
+        {user ? (
           <div
             style={{
               display: "flex",
@@ -83,11 +90,11 @@ const Navbar = () => {
                 Log Out
               </Button>
               <Link
-                href={`userData/${reduxUser.fullName}`}
+                href={`userData/${user.fullName}`}
                 style={{ textDecoration: "none", color: "white" }}
               >
                 <Avatar sx={{ bgcolor: "#5a91c7" }}>
-                  {reduxUser.fullName
+                  {user.fullName
                     .split(" ")
                     .map((word) => word.charAt(0))
                     .join("")}
