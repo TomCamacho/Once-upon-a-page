@@ -19,8 +19,7 @@ import { message } from "antd";
 //import { GoogleLogin, GoogleLogout } from "react-google-login";
 
 const initialFormState = {
-  name: "",
-  lastname: "",
+  fullName: "",
   email: "",
   password: "",
   confirmPassword: "",
@@ -42,7 +41,7 @@ function Auth() {
   const handleShowPassword = () => setShowPassword((prev) => !prev); // toggle show password
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({ ...formData, [e.target.fullName]: e.target.value });
   };
 
   const handleSubmit = (e) => {
@@ -50,10 +49,10 @@ function Auth() {
     console.log("DATOS DEL FORM:", formData);
     if (signUp) {
       axios
-        .post("/register", formData)
+        .post("/user/register", formData)
         .then((newUser) => {
           message.success(
-            `New user (${newUser.data.name}) created successfully!`
+            `New user (${newUser.data.fullName}) created successfully!`
           );
           navigate("/login");
         })
@@ -61,12 +60,12 @@ function Auth() {
     } else {
       console.log("DATOS DEL FORM:", formData);
       axios
-        .post("/login", formData)
+        .post("/user/login", formData)
         .then((existingUser) => {
           dispatch(logIn(existingUser));
           localStorage.setItem("profile", JSON.stringify(existingUser.data));
           message.success(
-            `Successful login! Welcome back ${existingUser.data.name}`
+            `Successful login! Welcome back ${existingUser.data.fullName}`
           );
           navigate("/");
         })
@@ -143,17 +142,9 @@ function Auth() {
           <Grid container spacing={2}>
             {signUp && (
               <>
-                {/* <Input
-                  name="name"
-                  label="Name"
-                  handleChange={handleChange}
-                  autoFocus
-                  half
-                  type="text"
-                /> */}
                 <Input
-                  name="displayName"
-                  label="Username"
+                  name="fullName"
+                  label="Full Name"
                   handleChange={handleChange}
                   type="text"
                 />

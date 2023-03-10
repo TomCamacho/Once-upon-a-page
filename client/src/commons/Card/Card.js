@@ -28,7 +28,7 @@ const Card = ({ data }) => {
         }}
       >
         <Box
-          onClick={() => navigate(`${data.id}`)}
+          onClick={() => navigate(`book/${data.id}`)}
           sx={{
             width: "100%",
             height: "80%",
