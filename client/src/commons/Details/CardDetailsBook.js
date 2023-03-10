@@ -55,7 +55,7 @@ const CardDetailsBook = ({ data }) => {
           }}
         >
           <h4 style={{ margin: 0, marginBottom: "8px", color: "#DD6031" }}>
-            {`USD ${data.price / 100}`}
+            {`USD ${(data.price / 100).toFixed(2) }`}
           </h4>
         </Box>
       </Box>
