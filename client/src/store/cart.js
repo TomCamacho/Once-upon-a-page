@@ -45,24 +45,3 @@ const cartReducer = createReducer(initialState, {
 });
 
 export default cartReducer;
-
-// {
-//   id: 1,
-//   name: "Al final mueren los dos",
-//   images: [
-//     "https://www.tematika.com/media/catalog/Ilhsa/Imagenes/646539.jpg",
-//   ],
-//   price: 3490,
-//   weight: 300,
-//   units: 1,
-// },
-// {
-//   id: 2,
-//   name: "La sombra del viento",
-//   images: [
-//     "https://http2.mlstatic.com/D_NQ_NP_2X_632026-MLA42908785277_072020-F.webp",
-//   ],
-//   price: 4590,
-//   weight: 400,
-//   units: 2,
-// },
