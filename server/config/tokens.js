@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import { secret } from '../config.js'
+import { secret } from '../dotenv.js'
 
 export const generateToken = payload => {
   const token = jwt.sign({ user: payload }, secret, { expiresIn: '2d' })
