@@ -1,0 +1,11 @@
+{
+  "root": true,
+  "env": {
+    "shared-node-browser": true,
+    "es2022": true
+  },
+  "extends": ["eslint:recommended", "standard"],
+  "parserOptions": {
+    "ecmaVersion": "latest"
+  }
+}
