@@ -2,9 +2,13 @@
   "env": {
     "browser": true
   },
+  "parser": "@babel/eslint-parser",
+  "parserOptions": { "requireConfigFile": false },
   "extends": [
-    "plugin:react/recommended",
-    "plugin:react/jsx-runtime",
+    "standard",
+    "standard-jsx",
+    "standard-react",
+    "react-app",
     "prettier"
   ]
 }

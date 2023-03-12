@@ -3,6 +3,8 @@
     "node": true
   },
   "extends": [
+    "standard",
+    "plugin:node/recommended",
     "prettier"
   ]
 }
