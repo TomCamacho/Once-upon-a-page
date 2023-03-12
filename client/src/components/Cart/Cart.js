@@ -30,8 +30,6 @@ const Cart = () => {
 
   const handleDeleteCart = () => {
     dispatch(removeAll(reduxCart));
-    console.log("apretaste remove all");
-    console.log("reduxCart", reduxCart);
   };
 
   return (

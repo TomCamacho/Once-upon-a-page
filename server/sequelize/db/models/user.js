@@ -76,7 +76,6 @@ class User extends Model {
   }
 
   hasPassword(stringToValidate) {
-    console.log(this)
     return this.hash(stringToValidate, this.salt).then(
       newHash => newHash === this.password
     )
