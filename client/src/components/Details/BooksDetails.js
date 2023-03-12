@@ -1,5 +1,5 @@
-import React, { Component, useState } from "react";
-import CardDetailsBook from "../../commons/Details/CardDetailsBook";
+import React, { Component, useState } from 'react'
+import CardDetailsBook from '../../commons/Details/CardDetailsBook'
 import {
   Box,
   Grid,
@@ -8,28 +8,28 @@ import {
   Collapse,
   Rating,
   Link,
-} from "@mui/material";
-import CardReviewBook from "../../commons/Details/CardReviewBook";
-import { useParams } from "react-router";
-import { useDispatch } from "react-redux";
+} from '@mui/material'
+import CardReviewBook from '../../commons/Details/CardReviewBook'
+import { useParams } from 'react-router'
+import { useDispatch } from 'react-redux'
 import seed from '../../FakeData/FakeData'
 
 const BooksDetails = () => {
-  const [expanded, setExpanded] = useState(false);
-  const [showMore, setShowMore] = useState(false);
-  const params = useParams();
-  const id = params.id-1;
+  const [expanded, setExpanded] = useState(false)
+  const [showMore, setShowMore] = useState(false)
+  const params = useParams()
+  const id = params.id - 1
   const handleToggle = () => {
-    setShowMore(!showMore);
-  };
+    setShowMore(!showMore)
+  }
 
   const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
+    setExpanded(!expanded)
+  }
 
   return (
     <Grid container spacing={3} justifyContent="center">
-      <Box sx={{ display: { xs: "block", md: "block", lg: "none" } }}>
+      <Box sx={{ display: { xs: 'block', md: 'block', lg: 'none' } }}>
         <Grid marginTop="50px" item xs={12} md={12}>
           <Box display="flex" justifyContent="center" mb={2}>
             <CardDetailsBook data={seed[id]} />
@@ -38,10 +38,10 @@ const BooksDetails = () => {
       </Box>
       <Box
         sx={{
-          display: { xs: "none", md: "none", lg: "block" },
-          position: "fixed",
-          left: "220px",
-          top: "65px",
+          display: { xs: 'none', md: 'none', lg: 'block' },
+          position: 'fixed',
+          left: '220px',
+          top: '65px',
         }}
       >
         <Grid marginTop="50px" item xs={12}>
@@ -56,7 +56,7 @@ const BooksDetails = () => {
         xs={12}
         md={12}
         lg={6}
-        sx={{ maxWidth: "800px", marginLeft: "40px", marginRight: "40px" }}
+        sx={{ maxWidth: '800px', marginLeft: '40px', marginRight: '40px' }}
       >
         <Box mb={2}>
           <Typography variant="h4">{seed[id].title}</Typography>
@@ -66,29 +66,29 @@ const BooksDetails = () => {
                 <Link
                   href={`/${author}`}
                   sx={{
-                    color: "inherit",
-                    textDecoration: "none",
-                    "&:hover": { textDecoration: "underline" },
+                    color: 'inherit',
+                    textDecoration: 'none',
+                    '&:hover': { textDecoration: 'underline' },
                   }}
                 >
                   {author}
                 </Link>
-                {index < seed[id].authors.length - 1 ? ", " : ""}
+                {index < seed[id].authors.length - 1 ? ', ' : ''}
               </React.Fragment>
             ))}
           </Typography>
         </Box>
         <Box
           sx={{
-            display: "inline-flex",
-            alignItems: "center",
-            transition: "background-color 0.3s ease",
-            borderRadius: "8px",
-            paddingTop: "10px",
-            paddingBottom: "10px",
-            marginBottom: "10px",
-            "&:hover": {
-              backgroundColor: "lightgray",
+            display: 'inline-flex',
+            alignItems: 'center',
+            transition: 'background-color 0.3s ease',
+            borderRadius: '8px',
+            paddingTop: '10px',
+            paddingBottom: '10px',
+            marginBottom: '10px',
+            '&:hover': {
+              backgroundColor: 'lightgray',
             },
           }}
         >
@@ -102,8 +102,8 @@ const BooksDetails = () => {
             variant="h4"
             component="div"
             sx={{
-              marginLeft: "8px",
-              fontSize: "1.25rem",
+              marginLeft: '8px',
+              fontSize: '1.25rem',
             }}
           >
             {seed[id].rating}
@@ -124,14 +124,14 @@ const BooksDetails = () => {
               variant="body2"
               onClick={() => setShowMore(!showMore)}
             >
-              {showMore ? "Show less" : "Show more"}
+              {showMore ? 'Show less' : 'Show more'}
             </Link>
           )}
         </Box>
         <Box
           mb={2}
           sx={{
-            paddingTop: "10px",
+            paddingTop: '10px',
           }}
         >
           <Typography variant="h5">Genres</Typography>
@@ -171,10 +171,10 @@ const BooksDetails = () => {
                 onClick={handleExpandClick}
                 sx={{ mb: 1 }}
               >
-                {expanded ? "Hide Reviews" : "Show Reviews"}
+                {expanded ? 'Hide Reviews' : 'Show Reviews'}
               </Button>
               <Collapse in={expanded} timeout="auto" unmountOnExit>
-                {seed[id].reviews.map((review) => (
+                {seed[id].reviews.map(review => (
                   <Box key={review.id} mb={2}>
                     <CardReviewBook review={review} />
                   </Box>
@@ -189,7 +189,7 @@ const BooksDetails = () => {
         </Box>
       </Grid>
     </Grid>
-  );
-};
+  )
+}
 
-export default BooksDetails;
+export default BooksDetails
