@@ -4,6 +4,7 @@
   },
   "parser": "@babel/eslint-parser",
   "parserOptions": { "requireConfigFile": false },
+  "plugins": ["material-ui"],
   "extends": [
     "react-app",
     "plugin:jsx-a11y/recommended",
@@ -14,6 +15,7 @@
   ],
   "rules": {
     "react/react-in-jsx-scope": "off",
-    "react/prop-types": "off"
+    "react/prop-types": "off",
+    "react/no-unknown-property": ["error", { "ignore": ["sx"] }]
   }
 }
