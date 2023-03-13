@@ -46,7 +46,7 @@ const Navbar = () => {
           color="inherit"
           aria-label="menu"
           sx={{ mr: 2 }}
-        ></IconButton>
+         />
         <Typography
           onClick={() => navigate('/')}
           variant="h6"

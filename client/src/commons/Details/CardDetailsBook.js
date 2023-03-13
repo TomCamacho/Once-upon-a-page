@@ -7,7 +7,7 @@ import { message } from 'antd'
 const CardDetailsBook = ({ data }) => {
   const dispatch = useDispatch()
   const handleClick = () => {
-    let addToCart = {
+    const addToCart = {
       id: data.id,
       name: data.title,
       images: data.images,

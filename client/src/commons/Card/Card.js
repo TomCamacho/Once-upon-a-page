@@ -8,7 +8,7 @@ const Card = ({ data }) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const handleClick = () => {
-    let addToCart = {
+    const addToCart = {
       id: data.id,
       name: data.title,
       images: data.images,
