@@ -29,6 +29,18 @@ class Book extends Model {
         type: DataTypes.INTEGER,
         defaultValue: 0,
       },
+      googleId: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      frontImage: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      backImage: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     }
 
     const defaultScope = {
