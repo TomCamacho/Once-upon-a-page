@@ -1,20 +1,38 @@
 import { Router } from 'express'
 
-import Books from '../sequelize/db/models/book.js'
-
 const router = Router()
 
-router.get('/', (req, res) => {
-  Books.findAll().then(books => res.status(200).send(books))
+const apiBaseURL = 'https://www.googleapis.com/books/v1/volumes/'
+const apiSearch = '?projection=lite&langRestrict=en&filter=paid-ebooks&q='
+
+const bookForClient = book => ({
+  googleId: book.id,
+  title: book.volumeInfo.title,
+  authors: book.volumeInfo.authors,
+  price: book.saleInfo.retailPrice * 100,
+  rating: book.volumeInfo.averageRating,
+  images: [book.volumeInfo.imageLinks.thumbnail],
+  genres: [book.volumeInfo.categories],
+  pages: book.volumeInfo.pageCount,
+  publishingHouse: book.volumeInfo.publisher,
+  published: book.volumeInfo.publishedDate,
+  language: book.volumeInfo.language,
+  description: book.volumeInfo.description,
 })
 
-router.get('/:id', (req, res, next) => {
-  const { id } = req.params
-  Books.findByPk(id).then(book => {
-    if (!book) return next()
+router.get('/search/:textToSearch', async (req, res) => {
+  const { textToSearch } = req.params
+  const response = await fetch(apiBaseURL.concat(apiSearch, textToSearch))
+  const books = (await response.json()).items
+  const booksForClient = books.map(book => bookForClient(book));
+  res.status(200).send(booksForClient)
+})
 
-    res.status(200).send(book)
-  })
+router.get('/:id', async (req, res, next) => {
+  const { id } = req.params
+  const response = await fetch(apiBaseURL.concat(id))
+  const book = await response.json()
+  res.status(200).send(bookForClient(book))
 })
 
 export default router
