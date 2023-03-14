@@ -1,40 +1,51 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router'
-
 import { useSelector, useDispatch } from 'react-redux'
-import { removeAll } from '../../store/cart'
-
+import { clearCart, addProduct } from '../../store/cart'
+import { logIn } from '../../store/user'
 import CardCart from '../../commons/Details/CardCart'
 import { Button, Stack, Typography } from '@mui/material'
+import { message } from 'antd'
 
 const Cart = () => {
+  // Redux
   const dispatch = useDispatch()
-  const navigate = useNavigate()
   const reduxUser = useSelector(state => state.user)
-
   const reduxCart = useSelector(state => state.cart)
-
-  const [totalPrice, setTotalPrice] = useState(0)
-
+  // Navigation
+  const navigate = useNavigate()
+  // LocalStorage
+  const localStorageCart = JSON.parse(localStorage.getItem('cart'))
+  const localStorageUser = JSON.parse(localStorage.getItem('profile'))
+  // State
+  const [activeCart, setActiveCart] = useState(
+    localStorageCart || reduxCart.cartItems
+  )
+  const [activeUser, setActiveUser] = useState(localStorageUser || reduxUser)
+  // Effect
   useEffect(() => {
-    let total = 0
-    reduxCart.forEach(product => {
-      total += (product.price * product.units) / 100
+    dispatch(logIn(activeUser))
+    activeCart.forEach(item => {
+      dispatch(addProduct(item))
     })
-    setTotalPrice(total)
-  }, [reduxCart])
-
+  }, [])
+  useEffect(() => {
+    setActiveUser(reduxUser)
+    setActiveCart(reduxCart.cartItems)
+  }, [reduxCart.cartItems, reduxUser])
+  // Handlers
   const handleCheckOut = () => {
-    reduxUser !== null ? navigate('/checkOut') : navigate('/login')
+    activeUser !== null ? navigate('/checkOut') : navigate('/login')
   }
-
   const handleDeleteCart = () => {
-    dispatch(removeAll(reduxCart))
+    dispatch(clearCart(reduxCart.cartItems))
+    localStorage.removeItem('cart')
+    message.success('Cart cleared')
   }
 
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-      {reduxCart?.map((product, i) => {
+      {activeCart.map((product, i) => {
         return <CardCart product={product} key={i} />
       })}
       <Stack
@@ -44,7 +55,7 @@ const Cart = () => {
         sx={{ marginTop: '16px' }}
       >
         <Typography variant="h6" component="div">
-          Total: USD {totalPrice.toFixed(2)}
+          Total: USD {reduxCart.totalAmount.toFixed(2) / 100}
         </Typography>
         <Stack direction="row">
           <Button
