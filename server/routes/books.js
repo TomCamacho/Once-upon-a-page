@@ -1,5 +1,7 @@
 import { Router } from 'express'
 
+import { Book } from '../sequelize/db/models/index.js'
+
 const router = Router()
 
 const apiBaseURL = 'https://www.googleapis.com/books/v1/volumes/'
@@ -20,15 +22,20 @@ const bookForClient = book => ({
   description: book.volumeInfo.description,
 })
 
+router.get('/', async (req, res) => {
+  const books = await Book.findAll()
+  res.status(200).send(books)
+})
+
 router.get('/search/:textToSearch', async (req, res) => {
   const { textToSearch } = req.params
   const response = await fetch(apiBaseURL.concat(apiSearch, textToSearch))
   const books = (await response.json()).items
-  const booksForClient = books.map(book => bookForClient(book));
+  const booksForClient = books.map(book => bookForClient(book))
   res.status(200).send(booksForClient)
 })
 
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', async (req, res) => {
   const { id } = req.params
   const response = await fetch(apiBaseURL.concat(id))
   const book = await response.json()

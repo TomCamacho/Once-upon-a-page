@@ -7,27 +7,17 @@ import connection from '../index.js'
 class Book extends Model {
   static init(aConnection) {
     const schema = {
-      title: {
+      googleId: {
         type: DataTypes.STRING,
+        unique: true,
         allowNull: false,
         validate: {
-          notEmpty: true,
-        },
-      },
-      description: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-        validate: {
-          notEmpty: true,
-        },
+          notEmpty: true
+        }
       },
       stock: {
         type: DataTypes.INTEGER,
-        defaultValue: 0,
-      },
-      price: {
-        type: DataTypes.INTEGER,
-        defaultValue: 0,
+        defaultValue: 1,
       },
     }
 
