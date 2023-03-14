@@ -14,6 +14,9 @@ const HistoryCard = ({ product }) => {
           maxWidth: '500px',
           width: '100%',
           margin: '0.5em',
+          '@media (max-width: 768px)': {
+            width: 'auto'
+          }
         }}
       >
         <CardMedia

@@ -49,9 +49,9 @@ const HistoryGrid = () => {
               justifyContent: 'center',
               backgroundColor: '#e3dede',
               margin: '1em',
-              width: '100%',
+              width: '80%',
 
-              '@media (max-width: 768px)': {
+              '@media (max-width: 1000px)': {
                 width: 'auto',
               },
             }}
