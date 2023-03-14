@@ -11,23 +11,24 @@ import {
 } from '@mui/material'
 import { Delete, Add, Remove } from '@mui/icons-material'
 import { useDispatch } from 'react-redux'
-import { addUnit, removeProduct, subtractUnit } from '../../store/cart'
+import { addUnit, removeUnit, deleteProduct } from '../../store/cart'
 import { message } from 'antd'
 import { useNavigate } from 'react-router'
 
 const CartProduct = ({ product }) => {
+  // Navigation
   const navigate = useNavigate()
+  // Redux
   const dispatch = useDispatch()
+  // Handlers
   const handleAdd = () => {
     dispatch(addUnit(product.id))
   }
-
   const handleRemove = () => {
-    dispatch(subtractUnit(product.id))
+    dispatch(removeUnit(product.id))
   }
-
   const handleDelete = () => {
-    dispatch(removeProduct(product.id))
+    dispatch(deleteProduct(product.id))
     message.success(`The product has been removed`)
   }
 

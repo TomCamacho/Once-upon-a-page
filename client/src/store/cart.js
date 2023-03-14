@@ -1,57 +1,88 @@
 import { createAction, createReducer } from '@reduxjs/toolkit'
 
-export const addUnit = createAction('addUnit')
-export const subtractUnit = createAction('subtractUnit')
-export const newProduct = createAction('newProduct')
-export const removeProduct = createAction('removeProduct')
-export const removeAll = createAction('removeAll')
+export const addProduct = createAction('ADD_PRODUCT')
+export const deleteProduct = createAction('DELETE_PRODUCT')
+export const addUnit = createAction('ADD_UNIT')
+export const removeUnit = createAction('REMOVE_UNIT')
+export const clearCart = createAction('CLEAR_CART')
 
-const initialState = []
+const initialState = {
+  cartItems: [],
+  totalQuantity: 0,
+  totalAmount: 0,
+}
 
 const cartReducer = createReducer(initialState, {
-  [addUnit]: (state, action) => {
-    return state.map(product => {
-      if (product.id === action.payload) {
-        return {
-          ...product,
-          units: product.units + 1,
-        }
-      }
-      return product
-    })
-  },
-  [subtractUnit]: (state, action) => {
-    return state.map(product => {
-      if (product.units === 1) {
-        return {
-          ...product,
-          units: product.units,
-        }
-      }
-      if (product.id === action.payload) {
-        return {
-          ...product,
-          units: product.units - 1,
-        }
-      }
-      return product
-    })
-  },
-  [newProduct]: (state, action) => {
-    const productExists = state.find(
-      product => product.id === action.payload.id
-    )
-    if (productExists) {
-      productExists.units += 1;
-      return [...state]
-    } else {
-      return [...state, action.payload]
+  [addProduct]: (state, action) => {
+    const newItem = action.payload
+    const existingItem = state.cartItems.find(item => item.id === newItem.id)
+
+    if (!existingItem) {
+      state.cartItems.push(newItem)
+      state.totalQuantity++
     }
+
+    state.totalAmount = state.cartItems.reduce(
+      (total, item) => total + Number(item.price) * Number(item.units),
+      0
+    )
+
+    localStorage.setItem('cart', JSON.stringify(state.cartItems))
   },
-  [removeProduct]: (state, action) => {
-    return state.filter(product => product.id !== action.payload)
+  [addUnit]: (state, action) => {
+    const id = action.payload
+    const existingItem = state.cartItems.find(item => item.id === id)
+    state.totalQuantity++
+
+    if (existingItem) {
+      existingItem.units++
+    }
+
+    state.totalAmount = state.cartItems.reduce(
+      (total, item) => total + Number(item.price) * Number(item.units),
+      0
+    )
+
+    localStorage.setItem('cart', JSON.stringify(state.cartItems))
   },
-  [removeAll]: (state, action) => (state = initialState),
+
+  [removeUnit]: (state, action) => {
+    const id = action.payload
+    const existingItem = state.cartItems.find(item => item.id === id)
+    state.totalQuantity--
+
+    if (existingItem.units === 1) {
+      state.cartItems = state.cartItems.filter(item => item.id !== id)
+    } else {
+      existingItem.units--
+    }
+
+    state.totalAmount = state.cartItems.reduce(
+      (total, item) => total + Number(item.price) * Number(item.units),
+      0
+    )
+
+    localStorage.setItem('cart', JSON.stringify(state.cartItems))
+  },
+  [deleteProduct]: (state, action) => {
+    const existingItem = state.cartItems.find(
+      item => item.id === action.payload
+    )
+    if (existingItem) {
+      state.cartItems = state.cartItems.filter(
+        item => item.id !== action.payload
+      )
+      state.totalQuantity = state.totalQuantity - existingItem.units
+    }
+
+    state.totalAmount = state.cartItems.reduce(
+      (total, item) => total + Number(item.price) * Number(item.units),
+      0
+    )
+
+    localStorage.setItem('cart', JSON.stringify(state.cartItems))
+  },
+  [clearCart]: (state, action) => (state = initialState),
 })
 
 export default cartReducer
