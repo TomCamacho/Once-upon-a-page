@@ -6,6 +6,8 @@ import BooksDetails from './components/Details/BooksDetails'
 import Cart from './components/Cart/Cart'
 import Red from './components/Red/Red'
 import HistoryGrid from './components/History/HistoryGrid'
+import AddForm from './components/Admin/AddForm/AddForm'
+
 
 function App() {
   return (
@@ -18,6 +20,7 @@ function App() {
         <Route path="/user/:id">USER</Route>
         <Route path="/history" element={<HistoryGrid />}/>
         <Route path="/books">BOOKS</Route>
+        <Route path="/add" element={<AddForm/>}/>
         <Route path="/book/:id" element={<BooksDetails />}>
           SINGLE BOOK
         </Route>
