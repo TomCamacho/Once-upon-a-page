@@ -7,44 +7,36 @@ import connection from '../index.js'
 class Book extends Model {
   static init(aConnection) {
     const schema = {
-      googleId: {
+      title: {
         type: DataTypes.STRING,
-        unique: true,
         allowNull: false,
         validate: {
-          notEmpty: true
-        }
+          notEmpty: true,
+        },
       },
       stock: {
         type: DataTypes.INTEGER,
         defaultValue: 1,
       },
-    }
-
-    const defaultScope = {
-      attributes: {
-        exclude: ['id'],
+      price: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
       },
-    }
-
-    const scopes = {
-      everything: {
-        attributes: {},
+      images: {
+        type: DataTypes.ARRAY(DataTypes.STRING(510))
+      },
+      description: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+        validate: {
+          notEmpty: true,
+        },
       },
     }
 
     return super.init(schema, {
-      defaultScope,
-      scopes,
       sequelize: aConnection,
     })
-  }
-
-  // See nonybrighto's comment in https://stackoverflow.com/a/48357983/8706387
-  toJSON() {
-    const BookForClient = this.get({ clone: true })
-    ;['id'].forEach(key => delete BookForClient[key])
-    return BookForClient
   }
 }
 

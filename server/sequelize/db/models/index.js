@@ -1,14 +1,9 @@
 'use strict'
 
-import User from './user.js'
-import Book from './book.js'
-import Genre from './genre.js'
+import user from './user.js'
+import book from './book.js'
+import order from './order.js'
 
-Book.hasMany(Genre)
-Genre.belongsTo(Book)
-
-export default {
-  User,
-  Book,
-  Genre
-}
+export const User = user
+export const Book = book
+export const Order = order

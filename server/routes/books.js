@@ -1,5 +1,6 @@
 import { Router } from 'express'
 
+import { validateAuth } from '../middleware/auth.js'
 import { Book } from '../sequelize/db/models/index.js'
 
 const router = Router()
@@ -11,7 +12,7 @@ const bookForClient = book => ({
   googleId: book.id,
   title: book.volumeInfo.title,
   authors: book.volumeInfo.authors,
-  price: book.saleInfo.retailPrice * 100,
+  price: book.saleInfo.retailPrice.amount * 100,
   rating: book.volumeInfo.averageRating,
   images: [book.volumeInfo.imageLinks.thumbnail],
   genres: [book.volumeInfo.categories],
@@ -20,11 +21,25 @@ const bookForClient = book => ({
   published: book.volumeInfo.publishedDate,
   language: book.volumeInfo.language,
   description: book.volumeInfo.description,
+  stock: book.stock
 })
 
 router.get('/', async (req, res) => {
-  const books = await Book.findAll()
-  res.status(200).send(books)
+  let condition
+  const { title, googleId } = req.query
+  if (title) condition = { title }
+  if (googleId) condition = { googleId }
+  const books = await Book.findAll({ where: condition }, { include: 'Genre' })
+  return res.status(200).send(books)
+})
+
+// TODO replace validateAuth with validateAdmin middleware
+router.post('/', validateAuth, async (req, res) => {
+  const { googleId, stock } = req.body
+  const response = await fetch(apiBaseURL.concat(googleId))
+  const book = await response.json()
+  const bookToAdd = await Book.create(bookForClient({...book, stock}))
+  res.status(201).send(bookToAdd)
 })
 
 router.get('/search/:textToSearch', async (req, res) => {
@@ -35,7 +50,7 @@ router.get('/search/:textToSearch', async (req, res) => {
   res.status(200).send(booksForClient)
 })
 
-router.get('/:id', async (req, res) => {
+router.get('/volume/:id', async (req, res) => {
   const { id } = req.params
   const response = await fetch(apiBaseURL.concat(id))
   const book = await response.json()
