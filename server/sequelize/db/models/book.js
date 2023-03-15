@@ -7,6 +7,9 @@ import connection from '../index.js'
 class Book extends Model {
   static init(aConnection) {
     const schema = {
+      googleId: {
+        type: DataTypes.STRING,
+      },
       title: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -23,7 +26,7 @@ class Book extends Model {
         defaultValue: 0,
       },
       images: {
-        type: DataTypes.ARRAY(DataTypes.STRING(510))
+        type: DataTypes.ARRAY(DataTypes.STRING(510)),
       },
       description: {
         type: DataTypes.TEXT,

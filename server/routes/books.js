@@ -1,5 +1,7 @@
 import { Router } from 'express'
 
+import { Op } from 'sequelize'
+
 import { validateAuth } from '../middleware/auth.js'
 import { Book } from '../sequelize/db/models/index.js'
 
@@ -27,7 +29,7 @@ const bookForClient = book => ({
 router.get('/', async (req, res) => {
   let condition
   const { title, googleId } = req.query
-  if (title) condition = { title }
+  if (title) condition = { title: {[Op.iLike]: `%${title}%`} }
   if (googleId) condition = { googleId }
   const books = await Book.findAll({ where: condition }, { include: 'Genre' })
   return res.status(200).send(books)
