@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Box, Container, Grid, Link, Typography } from '@mui/material'
+import FilterDesktop from "../Filters/FilterDesktop"
 
 import books from '../../FakeData/FakeData.js'
 import Card from '../../commons/Card/Card.js'
@@ -21,6 +22,8 @@ const Red = () => {
   }, [])
 
   return (
+    <>
+    <FilterDesktop />
     <Box sx={{ flexGrow: 1 }}>
       <Container maxWidth="md" sx={{ mt: 4 }}>
         <Grid container spacing={3}>
@@ -34,6 +37,7 @@ const Red = () => {
         </Grid>
       </Container>
     </Box>
+    </>
   )
 }
 

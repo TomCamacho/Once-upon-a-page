@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
 import {
-  Box,
-  Button,
   Checkbox,
   Drawer,
   FormControl,
   FormControlLabel,
   FormGroup,
   IconButton,
-  List,
   ListItem,
   ListItemIcon,
   ListItemText,
@@ -167,3 +164,4 @@ const FilterDesktop = () => {
 };
 
 export default FilterDesktop;
+
