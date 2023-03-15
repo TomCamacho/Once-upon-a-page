@@ -4,7 +4,8 @@ import Checkbox from '@mui/material/Checkbox'
 import Autocomplete from '@mui/material/Autocomplete'
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank'
 import CheckBoxIcon from '@mui/icons-material/CheckBox'
-import StickyHeadTable from './prueba'
+import StockTable from '../SotckTable/StockTable'
+import UserAdmin from '../UserAdmin/UserAdmin'
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />
 const checkedIcon = <CheckBoxIcon fontSize="small" />
@@ -21,10 +22,7 @@ const categories = [
   { name: 'Self-help', id: 'self-help' },
 ]
 
-
-
 const AddForm = () => {
-
   const initialFormState = {
     ISBM: '',
     Genre: '',
@@ -49,22 +47,26 @@ const AddForm = () => {
         getOptionLabel={option => option.name}
         renderOption={(props, option, { selected }) => (
           <li {...props}>
-            <Checkbox icon={icon} checkedIcon={checkedIcon} checked={selected} />
+            <Checkbox
+              icon={icon}
+              checkedIcon={checkedIcon}
+              checked={selected}
+            />
             {option.name}
           </li>
         )}
         renderInput={params => (
-          <TextField {...params} name='Genre' label="Genres" handleChange={handleChange} />
+          <TextField
+            {...params}
+            name="Genre"
+            label="Genres"
+            handleChange={handleChange}
+          />
         )}
       />
     )
   }
 
- 
-  
-  
-
-  
   const [open, setOpen] = React.useState(false)
 
   const handleOpen = () => {
@@ -84,8 +86,10 @@ const AddForm = () => {
 
   return (
     <>
-      <StickyHeadTable />
-      <Button onClick={handleOpen}>Add new product</Button>
+      <UserAdmin />
+      <Button onClick={handleOpen} variant="contained" color="primary" sx= {{display: "flex", ml:2 , mb: 2}}>
+        Add new product</Button>
+      <StockTable />
       <Modal
         open={open}
         onClose={handleClose}
@@ -125,10 +129,17 @@ const AddForm = () => {
 
             {CheckboxesTags()}
 
-            <TextField name='Stock' label="Stock" handleChange={handleChange} fullWidth required sx={{ mb: 2 }} />
+            <TextField
+              name="Stock"
+              label="Stock"
+              handleChange={handleChange}
+              fullWidth
+              required
+              sx={{ mb: 2 }}
+            />
             <TextField
               handleChange={handleChange}
-              name='Price'
+              name="Price"
               label="Price"
               fullWidth
               required

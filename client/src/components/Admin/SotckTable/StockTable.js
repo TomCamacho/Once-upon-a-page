@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Button, Modal, Box, Typography } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -8,6 +9,7 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import rows from '../../../FakeData/FakeData'
+import ModalBook from '../ModalBook/ModalBook';
 
 const columns = [
   { id: 'id', label: 'ID', minWidth: 10 },
@@ -29,9 +31,11 @@ const columns = [
 
 
 
-export default function StickyHeadTable() {
+export default function StockTable() {
+
+  const [selectedRow, setSelectedRow] = React.useState("")
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState(20);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -42,7 +46,20 @@ export default function StickyHeadTable() {
     setPage(0);
   };
 
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = (e, row) => {
+    setSelectedRow(row)
+    setOpen(true);
+
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
+    <>
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
@@ -64,7 +81,7 @@ export default function StickyHeadTable() {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => {
                 return (
-                  <TableRow onClick={() => console.log(`${row}`)} hover role="checkbox" tabIndex={-1} key={row.code}>
+                  <TableRow onClick={(e) => handleOpen(e,row)} hover role="checkbox" tabIndex={-1} key={row.code}>
                     {columns.map((column) => {
                       const value = row[column.id];
                       return (
@@ -82,7 +99,7 @@ export default function StickyHeadTable() {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
+        rowsPerPageOptions={[20, 50, 100]}
         component="div"
         count={rows.length}
         rowsPerPage={rowsPerPage}
@@ -91,5 +108,22 @@ export default function StickyHeadTable() {
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
     </Paper>
+    <Modal open={open} onClose={handleClose}>
+    <Box
+      sx={{
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'background.paper',
+        boxShadow: 24,
+        p: 2,
+      }}
+    >
+      <ModalBook row={selectedRow}/>
+    </Box>
+  </Modal>
+  </>
   );
 }
