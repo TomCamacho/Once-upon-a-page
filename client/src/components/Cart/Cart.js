@@ -40,6 +40,8 @@ const Cart = () => {
   const handleDeleteCart = () => {
     dispatch(clearCart(reduxCart.cartItems))
     localStorage.removeItem('cart')
+    localStorage.removeItem('totalQuantity')
+    localStorage.removeItem('totalAmount')
     message.success('Cart cleared')
   }
 
