@@ -1,9 +1,13 @@
 'use strict'
 
-import user from './user.js'
-import book from './book.js'
-import order from './order.js'
+import Book from './book.js'
+import Order from './order.js'
+import User from './user.js'
 
-export const User = user
-export const Book = book
-export const Order = order
+Order.belongsTo(User)
+User.hasMany(Order)
+
+Book.belongsToMany(Order, { through: 'Order_Book' })
+Order.belongsToMany(Book, { through: 'Order_Book' })
+
+export { Book, Order, User }

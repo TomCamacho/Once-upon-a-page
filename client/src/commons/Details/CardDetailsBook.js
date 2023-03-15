@@ -1,11 +1,13 @@
 import React from 'react'
 import { Box, Button, Grid } from '@mui/material'
-import { newProduct } from '../../store/cart'
+import { addProduct } from '../../store/cart'
 import { useDispatch } from 'react-redux'
 import { message } from 'antd'
 
 const CardDetailsBook = ({ data }) => {
+  // Redux
   const dispatch = useDispatch()
+  // Handlers
   const handleClick = () => {
     const addToCart = {
       id: data.id,
@@ -15,8 +17,8 @@ const CardDetailsBook = ({ data }) => {
       weight: data.weight,
       units: 1,
     }
-    dispatch(newProduct(addToCart))
-    message.success(`The product was added to the cart`)
+    dispatch(addProduct(addToCart))
+    message.success('New product added to the cart!')
   }
 
   return (
