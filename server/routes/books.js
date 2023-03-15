@@ -10,7 +10,7 @@ const router = Router()
 const apiBaseURL = 'https://www.googleapis.com/books/v1/volumes/'
 const apiSearch = '?projection=lite&langRestrict=en&filter=paid-ebooks&q='
 
-const bookForClient = book => ({
+const formatBookFromGoogle = book => ({
   googleId: book.id,
   title: book.volumeInfo.title,
   authors: book.volumeInfo.authors,
@@ -39,8 +39,8 @@ router.get('/', async (req, res) => {
 router.post('/', validateAuth, async (req, res) => {
   const { googleId, stock } = req.body
   const response = await fetch(apiBaseURL.concat(googleId))
-  const book = await response.json()
-  const bookToAdd = await Book.create(bookForClient({...book, stock}))
+  const bookFromGoogle = await response.json()
+  const bookToAdd = await Book.create(bookFromGoogle({...bookFromGoogle, stock}))
   res.status(201).send(bookToAdd)
 })
 
@@ -48,7 +48,7 @@ router.get('/search/:textToSearch', async (req, res) => {
   const { textToSearch } = req.params
   const response = await fetch(apiBaseURL.concat(apiSearch, textToSearch))
   const books = (await response.json()).items
-  const booksForClient = books.map(book => bookForClient(book))
+  const booksForClient = books.map(book => formatBookFromGoogle(book))
   res.status(200).send(booksForClient)
 })
 
@@ -56,7 +56,7 @@ router.get('/volume/:id', async (req, res) => {
   const { id } = req.params
   const response = await fetch(apiBaseURL.concat(id))
   const book = await response.json()
-  res.status(200).send(bookForClient(book))
+  res.status(200).send(formatBookFromGoogle(book))
 })
 
 export default router
