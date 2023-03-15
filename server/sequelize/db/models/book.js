@@ -20,6 +20,9 @@ class Book extends Model {
       stock: {
         type: DataTypes.INTEGER,
         defaultValue: 1,
+        validate: {
+          min: 0
+        }
       },
       price: {
         type: DataTypes.INTEGER,
