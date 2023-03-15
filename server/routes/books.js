@@ -50,6 +50,20 @@ router.get('/volume/:id', async (req, res) => {
   res.status(200).send(formatBookFromGoogle(book))
 })
 
+router.get('/:genre', (req, res) => {
+  const { genre } = req.params
+  console.log(genre)
+  Book.findAll({
+    where: {
+      genres: {
+        [Op.overlap]: [genre],
+      },
+    },
+  })
+    .then(books => res.status(200).send(books))
+    .catch(error => console.log(error))
+})
+
 // ----ADMIN----
 
 router.post('/', validateAuth, validateAdmin, async (req, res) => {
@@ -57,7 +71,7 @@ router.post('/', validateAuth, validateAdmin, async (req, res) => {
   const response = await fetch(apiBaseURL.concat(googleId))
   const book = await response.json()
   const bookToAdd = await Book.create(
-    bookForClient({ ...book, stock, price, genres })
+    formatBookFromGoogle({ ...book, stock, price, genres })
   )
   res.status(201).send(bookToAdd)
 })

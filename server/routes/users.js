@@ -44,6 +44,7 @@ router.post('/login', (req, res) => {
         const payload = {
           email: user.email,
           fullName: user.fullName,
+          admin: user.admin,
         }
         const token = generateToken(payload)
         res.cookie('token', token)
