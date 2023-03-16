@@ -39,6 +39,10 @@ class User extends Model {
       salt: {
         type: DataTypes.STRING,
       },
+      admin: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
     }
 
     const hooks = {

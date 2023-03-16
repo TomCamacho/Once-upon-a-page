@@ -38,18 +38,15 @@ class Book extends Model {
           notEmpty: true,
         },
       },
+      genres: {
+        type: DataTypes.ARRAY(DataTypes.STRING),
+        allowNull: false,
+      },
     }
 
     return super.init(schema, {
       sequelize: aConnection,
     })
-  }
-
-  // See nonybrighto's comment in https://stackoverflow.com/a/48357983/8706387
-  toJSON() {
-    const BookForClient = this.get({ clone: true })
-    ;['id'].forEach(key => delete BookForClient[key])
-    return BookForClient
   }
 }
 

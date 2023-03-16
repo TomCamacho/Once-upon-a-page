@@ -3,7 +3,7 @@ import { ValidationError } from 'sequelize'
 
 import User from '../sequelize/db/models/user.js'
 import { generateToken } from '../config/tokens.js'
-import { validateAuth } from '../middleware/auth.js'
+import { validateAdmin, validateAuth } from '../middleware/auth.js'
 
 const router = Router()
 
@@ -44,6 +44,7 @@ router.post('/login', (req, res) => {
         const payload = {
           email: user.email,
           fullName: user.fullName,
+          admin: user.admin,
         }
         const token = generateToken(payload)
         res.cookie('token', token)
@@ -59,6 +60,34 @@ router.get('/me', validateAuth, (req, res) => {
 router.post('/logout', (req, res) => {
   res.clearCookie('token')
   res.sendStatus(204)
+})
+
+// ----ADMIN----
+
+router.get('/', validateAuth, validateAdmin, (req, res) => {
+  User.findAll()
+    .then(users => res.status(200).send(users))
+    .catch(error => console.log(error))
+})
+
+router.put('/:id', validateAuth, validateAdmin, async (req, res) => {
+  const { id } = req.params
+  try {
+    await User.update(req.body, { where: { id: id } })
+    res.sendStatus(202)
+  } catch (error) {
+    res.sendStatus(404)
+  }
+})
+
+router.delete('/:id', validateAuth, validateAdmin, async (req, res) => {
+  const { id } = req.params
+  try {
+    await User.destroy({ where: { id: id } })
+    res.sendStatus(202)
+  } catch (error) {
+    res.sendStatus(404)
+  }
 })
 
 export default router

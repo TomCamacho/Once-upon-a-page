@@ -1,3 +1,5 @@
+'use strict'
+
 import Book from './book.js'
 import Order from './order.js'
 import User from './user.js'

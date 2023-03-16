@@ -1,13 +1,10 @@
-import axios from 'axios'
 import React, { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { Box, Container, Grid, Link, Typography } from '@mui/material'
+import { Box, Container, Grid } from '@mui/material'
 
 import books from '../../FakeData/FakeData.js'
 import Card from '../../commons/Card/Card.js'
 
 const Red = () => {
-  const navigate = useNavigate()
   // const [books, setBooks] = React.useState([]);
   useEffect(() => {
     // axios

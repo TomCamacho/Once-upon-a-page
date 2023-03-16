@@ -1,7 +1,6 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
-import { useHistory } from 'react-router-dom'
 import { message } from 'antd'
 import {
   AppBar,
@@ -12,16 +11,19 @@ import {
   Avatar,
   Box,
   Link,
+  Badge,
 } from '@mui/material'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 
 import { logOut } from '../../store/user'
 
 const Navbar = () => {
+  // Redux
   const dispatch = useDispatch()
-
-  const localStorageUser = JSON.parse(localStorage.getItem('profile'))
   const reduxStateUser = useSelector(state => state.user)
+  const reduxQuantity = useSelector(state => state.cart.totalQuantity)
+  // LocalStorage
+  const localStorageUser = JSON.parse(localStorage.getItem('profile'))
 
   let user
 
@@ -46,7 +48,7 @@ const Navbar = () => {
           color="inherit"
           aria-label="menu"
           sx={{ mr: 2 }}
-         />
+        />
         <Typography
           onClick={() => navigate('/')}
           variant="h6"
@@ -95,20 +97,26 @@ const Navbar = () => {
         ) : (
           <div>
             <Button
-              sx={{ backgroundColor: '#0F2830' }}
+              sx={{
+                backgroundColor: '#0F2830',
+                '&:hover': {
+                  backgroundColor: '#0F2830',
+                },
+              }}
               variant="contained"
               onClick={() => navigate('/login')}
             >
               Log In
             </Button>
-            <Button
-              sx={{ backgroundColor: '#D2C4FB' }}
-              variant="contained"
-              startIcon={<ShoppingCartIcon />}
+            <IconButton
               onClick={() => navigate('/cart')}
+              aria-label="Cart"
+              color="inherit"
             >
-              Cart
-            </Button>
+              <Badge badgeContent={reduxQuantity} color="error">
+                <ShoppingCartIcon style={{ color: '#F8FBFF' }} />
+              </Badge>
+            </IconButton>
           </div>
         )}
       </Toolbar>

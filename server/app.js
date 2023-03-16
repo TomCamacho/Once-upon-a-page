@@ -27,6 +27,12 @@ app.use((err, req, res, next) => {
 })
 
 db.sync({ force: true }).then(() => {
+  User.create({
+    fullName: 'admin',
+    password: 'admin',
+    email: 'admin@gmail.com',
+    admin: true,
+  })
   console.log('Db connected')
   app.listen(PORT, () => {
     console.log(`Server listening at port ${PORT}`)

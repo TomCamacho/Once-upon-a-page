@@ -1,12 +1,15 @@
 import { Box, Rating, Button } from '@mui/material'
 import { useNavigate } from 'react-router'
-import { newProduct } from '../../store/cart'
+import { addProduct } from '../../store/cart'
 import { useDispatch } from 'react-redux'
 import { message } from 'antd'
 
 const Card = ({ data }) => {
+  // Redux
   const dispatch = useDispatch()
+  // Navigation
   const navigate = useNavigate()
+  // Handlers
   const handleClick = () => {
     const addToCart = {
       id: data.id,
@@ -16,8 +19,8 @@ const Card = ({ data }) => {
       weight: data.weight,
       units: 1,
     }
-    dispatch(newProduct(addToCart))
-    message.success(`The product was added to the cart`)
+    dispatch(addProduct(addToCart))
+    message.success('New product added to the cart!')
   }
 
   return (
