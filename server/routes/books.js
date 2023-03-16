@@ -8,6 +8,7 @@ import { Book } from '../sequelize/db/models/index.js'
 const router = Router()
 
 const apiBaseURL = 'https://www.googleapis.com/books/v1/volumes/'
+const apiBaseURLISBN = 'https://www.googleapis.com/books/v1/volumes/?q=isbn:'
 const apiSearch = '?projection=lite&langRestrict=en&filter=paid-ebooks&q='
 
 const formatBookFromGoogle = book => ({
@@ -21,6 +22,22 @@ const formatBookFromGoogle = book => ({
   published: book.volumeInfo.publishedDate,
   language: book.volumeInfo.language,
   description: book.volumeInfo.description,
+  stock: book.stock,
+  price: book.stock,
+  genres: book.genres,
+})
+
+const formatBookFromGoogleByISBN = book => ({
+  googleId: book.items[0].id,
+  title: book.items[0].volumeInfo.title,
+  authors: book.items[0].volumeInfo.authors,
+  rating: book.items[0].volumeInfo.averageRating,
+  images: [book.items[0].volumeInfo.imageLinks.thumbnail],
+  pages: book.items[0].volumeInfo.pageCount,
+  publishingHouse: book.items[0].volumeInfo.publisher,
+  published: book.items[0].volumeInfo.publishedDate,
+  language: book.items[0].volumeInfo.language,
+  description: book.items[0].volumeInfo.description,
   stock: book.stock,
   price: book.stock,
   genres: book.genres,
@@ -67,11 +84,12 @@ router.get('/:genre', (req, res) => {
 // ----ADMIN----
 
 router.post('/', validateAuth, validateAdmin, async (req, res) => {
-  const { googleId, stock, price, genres } = req.body
-  const response = await fetch(apiBaseURL.concat(googleId))
+  const { isbn, stock, price, genres } = req.body
+  const response = await fetch(apiBaseURLISBN.concat(isbn))
   const book = await response.json()
+  console.log(book)
   const bookToAdd = await Book.create(
-    formatBookFromGoogle({ ...book, stock, price, genres })
+    formatBookFromGoogleByISBN({ ...book, stock, price, genres })
   )
   res.status(201).send(bookToAdd)
 })
