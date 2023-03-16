@@ -21,8 +21,8 @@ class Book extends Model {
         type: DataTypes.INTEGER,
         defaultValue: 1,
         validate: {
-          min: 0
-        }
+          min: 0,
+        },
       },
       price: {
         type: DataTypes.INTEGER,
@@ -37,6 +37,10 @@ class Book extends Model {
         validate: {
           notEmpty: true,
         },
+      },
+      genres: {
+        type: DataTypes.ARRAY(DataTypes.STRING),
+        allowNull: false,
       },
     }
 

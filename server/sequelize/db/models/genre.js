@@ -4,12 +4,12 @@ import { Model, DataTypes } from 'sequelize'
 
 import connection from '../index.js'
 
-class Order extends Model {
+class Genre extends Model {
   static init(aConnection) {
     const schema = {
-      status: {
-        type: DataTypes.STRING,
-        defaultValue: 'pending',
+      genreName: {
+        type: DataTypes.TEXT,
+        allowNull: false,
       },
     }
 
@@ -18,7 +18,6 @@ class Order extends Model {
     })
   }
 }
+Genre.init(connection)
 
-Order.init(connection)
-
-export default Order
+export default Genre
