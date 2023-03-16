@@ -102,6 +102,10 @@ const AddForm = () => {
  
   const handleSubmit = event => {
     event.preventDefault()
+    let finalGenre = formData.genres.map(genre => {
+      return genre.name
+    })
+    formData.genres = finalGenre
     axios.post(`http://localhost:3001/books`, formData)
     message.success(`The book has been added`)
     handleClose()
