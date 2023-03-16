@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react'
+import React, { useState } from 'react'
 import CardDetailsBook from '../../commons/Details/CardDetailsBook'
 import {
   Box,
@@ -11,7 +11,6 @@ import {
 } from '@mui/material'
 import CardReviewBook from '../../commons/Details/CardReviewBook'
 import { useParams } from 'react-router'
-import { useDispatch } from 'react-redux'
 import seed from '../../FakeData/FakeData'
 
 const BooksDetails = () => {
@@ -19,9 +18,6 @@ const BooksDetails = () => {
   const [showMore, setShowMore] = useState(false)
   const params = useParams()
   const id = params.id - 1
-  const handleToggle = () => {
-    setShowMore(!showMore)
-  }
 
   const handleExpandClick = () => {
     setExpanded(!expanded)

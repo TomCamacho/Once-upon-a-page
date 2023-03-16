@@ -2,15 +2,7 @@ import React from 'react'
 import { TextField, Grid, InputAdornment, IconButton } from '@mui/material'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 
-function Input({
-  name,
-  half,
-  label,
-  handleChange,
-  autoFocus,
-  type,
-  handleShowPassword,
-}) {
+function Input({ name, half, label, handleChange, type, handleShowPassword }) {
   return (
     <Grid item xs={12} sm={half ? 6 : 12}>
       <TextField
@@ -20,7 +12,6 @@ function Input({
         required
         fullWidth
         label={label}
-        autoFocus={autoFocus}
         type={type}
         InputProps={
           name === 'password'
