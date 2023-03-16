@@ -11,6 +11,14 @@ class Order extends Model {
         type: DataTypes.STRING,
         defaultValue: 'pending',
       },
+      totalAmount: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+      },
+      totalQuantity: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+      },
     }
 
     return super.init(schema, {
