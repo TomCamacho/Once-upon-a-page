@@ -4,9 +4,11 @@ import Checkbox from '@mui/material/Checkbox'
 import Autocomplete from '@mui/material/Autocomplete'
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank'
 import CheckBoxIcon from '@mui/icons-material/CheckBox'
-import StockTable from '../SotckTable/StockTable'
+import StockTable from '../StockTable/StockTable'
 import UserAdmin from '../UserAdmin/UserAdmin'
-
+import axios from 'axios'
+import { message } from 'antd'
+ 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />
 const checkedIcon = <CheckBoxIcon fontSize="small" />
 const categories = [
@@ -19,23 +21,39 @@ const categories = [
   { name: 'LGBT', id: 'lgbt' },
   { name: "Children's", id: 'children' },
   { name: 'Biography/Autobiography', id: 'biography' },
-  { name: 'Self-help', id: 'self-help' },
+  { name:   'Self-help', id: 'self-help' },
 ]
-
+ 
 const AddForm = () => {
   const initialFormState = {
-    ISBM: '',
-    Genre: '',
-    Stock: '',
-    Price: '',
+    isbn: '',
+    genres: [],
+    stock: '',
+    price: '',
   }
-
+ 
   const [formData, setFormData] = React.useState(initialFormState)
-
-  const handleChange = e => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
+ 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    const newValue = (name === "stock" || name === "price") ? Number(value) : value;
+    setFormData({ ...formData, [e.target.name]: newValue })
   }
-
+ 
+  const handleCheckboxChange = (option) => {
+    const currentIndex = formData.genres.indexOf(option);
+    const newSelectedOptions = [...formData.genres];
+ 
+    if (currentIndex === -1) {
+      newSelectedOptions.push(option);
+    } else {
+      newSelectedOptions.splice(currentIndex, 1);
+    }
+ 
+    setFormData({ ...formData, genres: newSelectedOptions });
+    console.log(newSelectedOptions);
+  };
+ 
   const CheckboxesTags = () => {
     return (
       <Autocomplete
@@ -44,46 +62,51 @@ const AddForm = () => {
         id="checkboxes-tags-demo"
         options={categories}
         disableCloseOnSelect
-        getOptionLabel={option => option.name}
+        getOptionLabel={(option) => option.name}
+        value={formData.genres}
+        onChange={(_, value) => setFormData({ ...formData, genres: value })}
         renderOption={(props, option, { selected }) => (
           <li {...props}>
             <Checkbox
               icon={icon}
               checkedIcon={checkedIcon}
               checked={selected}
+              name="genres"
+              value={option.name}
+              onChange={() => {
+                handleCheckboxChange(option);
+              }}
             />
             {option.name}
           </li>
         )}
-        renderInput={params => (
+        renderInput={(params) => (
           <TextField
             {...params}
-            name="Genre"
-            label="Genres"
-            handleChange={handleChange}
+            label="Genres" 
           />
         )}
       />
     )
   }
-
+ 
   const [open, setOpen] = React.useState(false)
-
+ 
   const handleOpen = () => {
     setOpen(true)
   }
-
+ 
   const handleClose = () => {
     setOpen(false)
   }
-
+ 
   const handleSubmit = event => {
     event.preventDefault()
-    // Aquí puedes realizar la lógica de envío del formulario
-    console.log(formData)
+    axios.post(`http://localhost:3001/books`, formData)
+    message.success(`The book has been added`)
     handleClose()
   }
-
+ 
   return (
     <>
       <UserAdmin />
@@ -119,31 +142,49 @@ const AddForm = () => {
           </Typography>
           <form onSubmit={handleSubmit}>
             <TextField
-              handleChange={handleChange}
-              name="ISBM"
+              onChange={handleChange}
+              name="isbn"
               label="ISBM"
               fullWidth
               required
               sx={{ mb: 2 }}
+              InputProps={{
+                inputProps: {
+                  pattern: "[0-9]*", 
+                  inputMode: "numeric",
+                },
+              }}
             />
-
+ 
             {CheckboxesTags()}
-
+ 
             <TextField
-              name="Stock"
+              name="stock"
               label="Stock"
-              handleChange={handleChange}
+              onChange={handleChange}
               fullWidth
               required
               sx={{ mb: 2 }}
+              InputProps={{
+                inputProps: {
+                  pattern: "[0-9]*", 
+                  inputMode: "numeric",
+                },
+              }}
             />
             <TextField
-              handleChange={handleChange}
-              name="Price"
+              onChange={handleChange}
+              name="price"
               label="Price"
               fullWidth
               required
               sx={{ mb: 2 }}
+              InputProps={{
+                inputProps: {
+                  pattern: "[0-9]*", 
+                  inputMode: "numeric", 
+                },
+              }}
             />
             <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
               <Button variant="outlined" onClick={handleClose} sx={{ mr: 2 }}>
@@ -159,5 +200,5 @@ const AddForm = () => {
     </>
   )
 }
-
+ 
 export default AddForm
