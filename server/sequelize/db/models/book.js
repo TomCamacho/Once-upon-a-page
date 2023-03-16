@@ -7,12 +7,29 @@ import connection from '../index.js'
 class Book extends Model {
   static init(aConnection) {
     const schema = {
+      googleId: {
+        type: DataTypes.STRING,
+      },
       title: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
           notEmpty: true,
         },
+      },
+      stock: {
+        type: DataTypes.INTEGER,
+        defaultValue: 1,
+        validate: {
+          min: 0,
+        },
+      },
+      price: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+      },
+      images: {
+        type: DataTypes.ARRAY(DataTypes.STRING(510)),
       },
       description: {
         type: DataTypes.TEXT,
@@ -21,43 +38,9 @@ class Book extends Model {
           notEmpty: true,
         },
       },
-      stock: {
-        type: DataTypes.INTEGER,
-        defaultValue: 0,
-      },
-      price: {
-        type: DataTypes.INTEGER,
-        defaultValue: 0,
-      },
-      googleId: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      frontImage: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      backImage: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-    }
-
-    const defaultScope = {
-      attributes: {
-        exclude: ['id'],
-      },
-    }
-
-    const scopes = {
-      everything: {
-        attributes: {},
-      },
     }
 
     return super.init(schema, {
-      defaultScope,
-      scopes,
       sequelize: aConnection,
     })
   }

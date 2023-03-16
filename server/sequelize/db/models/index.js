@@ -8,4 +8,4 @@ User.hasMany(Order)
 Book.belongsToMany(Order, { through: 'Order_Book' })
 Order.belongsToMany(Book, { through: 'Order_Book' })
 
-export { Book, Order, User }
+export default { Book, Order, User }
