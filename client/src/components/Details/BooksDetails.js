@@ -25,9 +25,6 @@ const BooksDetails = () => {
   const params = useParams()
   const id = params.id - 1
   // Handlers
-  const handleToggle = () => {
-    setShowMore(!showMore)
-  }
   const handleExpandClick = () => {
     setExpanded(!expanded)
   }
