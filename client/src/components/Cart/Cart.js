@@ -35,7 +35,11 @@ const Cart = () => {
   }, [reduxCart.cartItems, reduxUser])
   // Handlers
   const handleCheckOut = () => {
-    activeUser !== null ? navigate('/checkOut') : navigate('/login')
+    if (localStorageCart === null) {
+      message.warning('Add products to the Cart before checking out')
+    } else {
+      activeUser !== null ? navigate('/checkOut') : navigate('/login')
+    }
   }
   const handleDeleteCart = () => {
     dispatch(clearCart(reduxCart.cartItems))

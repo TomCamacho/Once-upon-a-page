@@ -18,15 +18,16 @@ const ReviewModal = ({ open, onClose }) => {
   const localStorageUser = JSON.parse(localStorage.getItem('profile'))
   // State
   const [reviewData, setReviewData] = useState({
+    email: localStorageUser.email,
     fullName: localStorageUser.fullName,
     date: `${currentDay}-${currentMonth}-${currentYear}`,
-    rating: '1',
+    rating: 1,
     review: '',
   })
   // Handlers
   const handleSubmit = event => {
     event.preventDefault()
-    // console.log(reviewData)
+    console.log(reviewData)
     // ACA HAY QUE HACER EL PEDIDO AXIOS Y PASARLE EL OBJETO reviewData
     onClose()
   }
