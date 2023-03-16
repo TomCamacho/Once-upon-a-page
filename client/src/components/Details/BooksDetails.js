@@ -12,15 +12,27 @@ import {
 import CardReviewBook from '../../commons/Details/CardReviewBook'
 import { useParams } from 'react-router'
 import seed from '../../FakeData/FakeData'
+import ReviewModal from '../ReviewModal/ReviewModal'
 
 const BooksDetails = () => {
+  // States
   const [expanded, setExpanded] = useState(false)
   const [showMore, setShowMore] = useState(false)
+  const [open, setOpen] = useState(false)
+  // LocalStorage
+  const localStorageUser = JSON.parse(localStorage.getItem('profile'))
+  // Params
   const params = useParams()
   const id = params.id - 1
-
+  // Handlers
   const handleExpandClick = () => {
     setExpanded(!expanded)
+  }
+  const handleOpen = () => {
+    setOpen(true)
+  }
+  const handleClose = () => {
+    setOpen(false)
   }
 
   return (
@@ -118,7 +130,7 @@ const BooksDetails = () => {
             <Link
               component="button"
               variant="body2"
-              onClick={() => setShowMore(!showMore)}
+              onClick={() => handleToggle()}
             >
               {showMore ? 'Show less' : 'Show more'}
             </Link>
@@ -159,6 +171,21 @@ const BooksDetails = () => {
         </Box>
         <Box mb={2}>
           <Typography variant="h5">Reviews</Typography>
+          {localStorageUser && (
+            <Button
+              variant="outlined"
+              color="primary"
+              sx={{ mb: 1 }}
+              onClick={handleOpen}
+            >
+              Add Review
+            </Button>
+          )}
+          {open === true ? (
+            <ReviewModal open={open} onClose={handleClose} />
+          ) : (
+            ''
+          )}
           {seed[id].reviews && seed[id].reviews.length > 0 ? (
             <Box>
               <Button

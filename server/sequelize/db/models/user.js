@@ -39,6 +39,10 @@ class User extends Model {
       salt: {
         type: DataTypes.STRING,
       },
+      admin: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
     }
 
     const hooks = {
@@ -53,7 +57,7 @@ class User extends Model {
 
     const defaultScope = {
       attributes: {
-        exclude: ['id', 'password', 'salt', 'createdAt', 'updatedAt'],
+        exclude: ['password', 'salt', 'createdAt', 'updatedAt'],
       },
     }
 

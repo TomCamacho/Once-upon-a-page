@@ -10,3 +10,7 @@ export const validateAuth = (req, res, next) => {
   req.user = user
   next()
 }
+export const validateAdmin = (req, res, next) => {
+  if (!req.user.admin) return res.sendStatus(401)
+  next()
+}
