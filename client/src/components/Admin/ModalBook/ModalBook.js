@@ -1,11 +1,14 @@
 import React, { useState } from 'react'
-import { Button, Box, Typography, TextField, InputBase } from '@mui/material'
+import { Button, Box, Typography, TextField } from '@mui/material'
+import axios from 'axios'
+import { message } from 'antd'
 
 function ModalBook({ row }) {
   const { id, title, price, stock, images, ...otherProps } = row
   console.log(row)
   const [open, setOpen] = useState(false)
   const [bookData, setBookData] = useState({
+    id,
     title,
     price,
     stock,
@@ -25,12 +28,17 @@ function ModalBook({ row }) {
   }
 
   const handleUpdateBook = () => {
-    console.log(bookData)
-    handleClose()
+     console.log(bookData)
+    //axios.put(`http://localhost:3001/books/${bookData.id}`, bookData)
+    message.success(`The book ${bookData.title} has been updated`)
+    setOpen(false)
   }
 
   const handleDeleteBook = () => {
-    console.log(bookData)
+
+    axios.delete(`http://localhost:3001/books/${bookData.id}`)
+    message.success(`The book ${bookData.title} has been deleted`)
+    setOpen(false)
   } 
 
   return (
