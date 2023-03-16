@@ -2,8 +2,8 @@ import nodemailer from 'nodemailer'
 
 export const sendEmail = async (email, dataOrder) => {
   const books = dataOrder.products.map((book, i) => {
-    if (i < dataOrder.products.length - 1) return `Product Name: ${book.title.toUpperCase()}, Quantity: ${book.quantity}, Price: ${book.price}  |  `
-    else return `Product Name: ${book.title.toUpperCase()}, Quantity: ${book.quantity}, Price: ${book.price}`
+    if (i < dataOrder.products.length - 1) return `Product Name: ${book.title.toUpperCase()}, Quantity: ${book.units}, Price: ${book.price}  |  `
+    else return `Product Name: ${book.title.toUpperCase()}, Quantity: ${book.units}, Price: ${book.price}`
   })
   const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',

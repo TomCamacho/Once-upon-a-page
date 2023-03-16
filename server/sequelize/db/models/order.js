@@ -7,9 +7,9 @@ import connection from '../index.js'
 class Order extends Model {
   static init(aConnection) {
     const schema = {
-      open: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: true,
+      status: {
+        type: DataTypes.STRING,
+        defaultValue: 'pending',
       },
       totalAmount: {
         type: DataTypes.INTEGER,
