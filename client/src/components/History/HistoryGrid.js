@@ -1,10 +1,9 @@
 import React from 'react'
-import orders from '../../FakeData/FakeOrder'
 
 import HistoryCard from '../../commons/Card/HistoryCard'
 import { Box, Typography } from '@mui/material'
 
-const HistoryGrid = () => {
+const HistoryGrid = ({orders}) => {
   return (
     <div
       style={{

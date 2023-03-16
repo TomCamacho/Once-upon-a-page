@@ -1,101 +1,82 @@
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router'
-import { Link } from 'react-router-dom'
-import Card from '../commons/Card'
+import React from 'react'
 import {
-  Box,
-  Button,
   Container,
   Grid,
   TextField,
   Typography,
+  Avatar,
+  useMediaQuery,
 } from '@mui/material'
-import { makeStyles } from '@mui/styles'
+import HistoryGrid from '../History/HistoryGrid'
+import orders from '../../FakeData/FakeOrder'
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    padding: 20,
-    '& > *': {
-      margin: 50,
-    },
-  },
-  section: {
-    marginBottom: 50,
-  },
-  heading: {
-    marginBottom: 50,
-  },
-}))
-
-const UserData = () => {
-  const id = useParams().id
-  const classes = useStyles()
-  const [user, setUser] = React.useState([])
-  const [favorites, setFavorites] = React.useState([])
-  const [name, setName] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [email, setEmail] = useState('')
-  const [userName, setUserName] = useState('')
-
-  useEffect(() => {
-    axios.get(`http://localhost:3001/api/users/id/${id}`).then(res => {
-      setUser([res.data])
-      setFavorites(res.data.favorites)
-      setName(res.data.name)
-      setLastName(res.data.lastName)
-      setEmail(res.data.email)
-      setUserName(res.data.userName)
-    })
-  }, [id])
-
-  return (
-    <div className={classes.root}>
-      <Container maxWidth="md">
-        <div className={classes.section}>
-          <Typography variant="h4" className={classes.heading}>
-            Información del usuario
-          </Typography>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField fullWidth label="Nombre" value={name} />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField fullWidth label="Apellido" value={lastName} />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField fullWidth label="Correo electrónico" value={email} />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField fullWidth label="Nombre de usuario" value={userName} />
-            </Grid>
-          </Grid>
-        </div>
-
-        <div className={classes.section}>
-          <Typography variant="h4" className={classes.heading}>
-            Contenido favorito del usuario
-          </Typography>
-          <Box display="flex" flexDirection="row" justifyContent="center">
-            {favorites.length > 0 ? (
-              favorites.map((data, i) => (
-                <Link to={`favdetails/${data.type}/${data.id}`} key={i}>
-                  <Card data={data.data} />
-                </Link>
-              ))
-            ) : (
-              <Typography variant="body1">
-                No se han cargado favoritos
-              </Typography>
-            )}
-          </Box>
-        </div>
-      </Container>
-    </div>
-  )
+const getInitials = name => {
+  return name
+    .split(' ')
+    .map(n => n[0])
+    .join('')
+    .toUpperCase()
 }
 
+const UserData = () => {
+  const localStorageUser = JSON.parse(localStorage.getItem('profile'))
+  const isScreenSmall = useMediaQuery('(max-width:600px)')
+
+  if (localStorageUser === null) {
+    return <h1>"No esta logueado" </h1>
+  } else {
+    return (
+      <div
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'left',
+          padding: 20,
+          '& > *': {
+            margin: 50,
+          },
+        }}
+      >
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={4}>
+            <Container sx={{ marginTop: 10, marginBottom: 10 }}>
+              <Typography variant="h5">Información del Usuario</Typography>
+              <Grid container spacing={2} alignItems="center">
+                <Grid item xs={12} sm={2} sx={{ marginTop: 5 }}>
+                  <Avatar 
+                    src={localStorageUser.avatarUrl}
+                    alt={localStorageUser.fullName}
+                    sx={{ width: 80, height: 80 }}
+                  >
+                    {getInitials(localStorageUser.fullName)}
+                  </Avatar>
+                </Grid>
+                <Grid item xs={12} sm={12} sx={{ marginTop: 5 }}>
+                  <TextField
+                    fullWidth
+                    label="Full name"
+                    value={localStorageUser.fullName}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={12} sx={{ marginTop: 5 }}>
+                  <TextField
+                    fullWidth
+                    label="Email"
+                    value={localStorageUser.email}
+                  />
+                </Grid>
+              </Grid>
+            </Container>
+          </Grid>
+          <Grid item sm={8}>
+            <Container sx={{ marginTop: 10, marginBottom: 10 }}>
+              <Typography textAlign="center" variant="h5">Ordenes de compra</Typography>
+              <HistoryGrid orders={orders} />
+            </Container>
+          </Grid>
+        </Grid>
+      </div>
+    )
+  }
+}
 export default UserData

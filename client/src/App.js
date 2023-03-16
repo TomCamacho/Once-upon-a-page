@@ -7,6 +7,7 @@ import Cart from './components/Cart/Cart'
 import Red from './components/Red/Red'
 import HistoryGrid from './components/History/HistoryGrid'
 import AddForm from './components/Admin/AddForm/AddForm'
+import UserData from './components/UserData/UserData'
 
 
 function App() {
@@ -17,7 +18,7 @@ function App() {
         <Route path="/" element={<Red />} />
         <Route path="/login" element={<Auth />} />
         <Route path="/register" element={<Auth />} />
-        <Route path="/user/:id">USER</Route>
+        <Route path="/user/:id" element={<UserData/>}/>
         <Route path="/history" element={<HistoryGrid />}/>
         <Route path="/books">BOOKS</Route>
         <Route path="/add" element={<AddForm/>}/>
