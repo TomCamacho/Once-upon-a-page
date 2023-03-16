@@ -1,0 +1,21 @@
+{
+  "env": {
+    "browser": true
+  },
+  "parser": "@babel/eslint-parser",
+  "parserOptions": { "requireConfigFile": false },
+  "plugins": ["material-ui"],
+  "extends": [
+    "react-app",
+    "plugin:jsx-a11y/recommended",
+    "standard",
+    "standard-jsx",
+    "standard-react",
+    "prettier"
+  ],
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "react/prop-types": "off",
+    "react/no-unknown-property": ["error", { "ignore": ["sx"] }]
+  }
+}
