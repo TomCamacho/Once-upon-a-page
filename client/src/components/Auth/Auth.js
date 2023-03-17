@@ -45,7 +45,8 @@ function Auth() {
           message.success(
             `New user (${newUser.data.fullName}) created successfully!`
           )
-          navigate('/login')
+          // navigate('/login')
+          switchMode()
         })
         .catch(err => message.error(err.message))
     } else {
@@ -116,7 +117,7 @@ function Auth() {
             />
             <Input
               name="password"
-              label="Password"
+              label="Password (8 characters min.)"
               handleChange={handleChange}
               type={showPassword ? 'text' : 'password'}
               handleShowPassword={handleShowPassword}

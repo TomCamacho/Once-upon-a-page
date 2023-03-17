@@ -6,10 +6,29 @@ export const addUnit = createAction('ADD_UNIT')
 export const removeUnit = createAction('REMOVE_UNIT')
 export const clearCart = createAction('CLEAR_CART')
 
+const items =
+  localStorage.getItem('cart') !== null
+    ? JSON.parse(localStorage.getItem('cart'))
+    : []
+const quantity =
+  localStorage.getItem('totalQuantity') !== null
+    ? JSON.parse(localStorage.getItem('totalQuantity'))
+    : 0
+const amount =
+  localStorage.getItem('totalAmount') !== null
+    ? JSON.parse(localStorage.getItem('totalAmount'))
+    : 0
+
+const setLocalStorageItems = (item, totalQuantity, totalAmount) => {
+  localStorage.setItem('cart', JSON.stringify(item))
+  localStorage.setItem('totalQuantity', JSON.stringify(totalQuantity))
+  localStorage.setItem('totalAmount', JSON.stringify(totalAmount))
+}
+
 const initialState = {
-  cartItems: [],
-  totalQuantity: 0,
-  totalAmount: 0,
+  cartItems: items,
+  totalQuantity: quantity,
+  totalAmount: amount,
 }
 
 const cartReducer = createReducer(initialState, {
@@ -27,7 +46,11 @@ const cartReducer = createReducer(initialState, {
       0
     )
 
-    localStorage.setItem('cart', JSON.stringify(state.cartItems))
+    setLocalStorageItems(
+      state.cartItems,
+      state.totalQuantity,
+      state.totalAmount
+    )
   },
   [addUnit]: (state, action) => {
     const id = action.payload
@@ -43,7 +66,11 @@ const cartReducer = createReducer(initialState, {
       0
     )
 
-    localStorage.setItem('cart', JSON.stringify(state.cartItems))
+    setLocalStorageItems(
+      state.cartItems,
+      state.totalQuantity,
+      state.totalAmount
+    )
   },
 
   [removeUnit]: (state, action) => {
@@ -62,7 +89,11 @@ const cartReducer = createReducer(initialState, {
       0
     )
 
-    localStorage.setItem('cart', JSON.stringify(state.cartItems))
+    setLocalStorageItems(
+      state.cartItems,
+      state.totalQuantity,
+      state.totalAmount
+    )
   },
   [deleteProduct]: (state, action) => {
     const existingItem = state.cartItems.find(
@@ -80,9 +111,18 @@ const cartReducer = createReducer(initialState, {
       0
     )
 
-    localStorage.setItem('cart', JSON.stringify(state.cartItems))
+    setLocalStorageItems(
+      state.cartItems,
+      state.totalQuantity,
+      state.totalAmount
+    )
   },
-  [clearCart]: (state, action) => (state = initialState),
+  [clearCart]: (state, action) =>
+    (state = {
+      cartItems: [],
+      totalQuantity: 0,
+      totalAmount: 0,
+    }),
 })
 
 export default cartReducer
