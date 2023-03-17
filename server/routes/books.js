@@ -62,7 +62,7 @@ router.get('/search/:textToSearch', async (req, res) => {
   res.status(200).send(booksForClient)
 })
 
-// consulta de volumen  particular a la api de google
+// consulta de volumen particular a la api de google
 router.get('/volume/:id', async (req, res) => {
   const { id } = req.params
   const response = await fetch(apiBaseURL.concat(id))
@@ -70,19 +70,20 @@ router.get('/volume/:id', async (req, res) => {
   res.status(200).send(formatBookFromGoogle(book))
 })
 
-router.get('/:genre', (req, res) => {
-  const { genre } = req.params
-  console.log(genre)
-  Book.findAll({
-    where: {
-      genres: {
-        [Op.overlap]: [genre],
-      },
-    },
-  })
-    .then(books => res.status(200).send(books))
-    .catch(error => console.log(error))
-})
+// TODO nunca va a llegar acá por overlap de rutas
+// router.get('/:genre', (req, res) => {
+//   const { genre } = req.params
+//   console.log(genre)
+//   Book.findAll({
+//     where: {
+//       genres: {
+//         [Op.overlap]: [genre],
+//       },
+//     },
+//   })
+//     .then(books => res.status(200).send(books))
+//     .catch(error => console.log(error))
+// })
 
 // ----ADMIN----
 
