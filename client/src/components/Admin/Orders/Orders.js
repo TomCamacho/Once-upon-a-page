@@ -15,7 +15,7 @@ const Orders = () => {
   const [formData, setFormData] = React.useState(initialFormState)
 
   const handleChange = e => {
-    const { name, value } = e.target
+   // const { name, value } = e.target
     const newValue =
     setFormData({ ...formData, [e.target.name]: newValue })
   }
