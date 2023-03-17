@@ -85,6 +85,26 @@ router.get('/volume/:id', async (req, res) => {
 //     .catch(error => console.log(error))
 // })
 
+router.post('/:id', validateAuth, async (req, res, next) => {
+  const { email } = req.body
+  try {
+    const book = await Book.findByPk(req.params.id)
+    if (book.reviews.length !== 0) {
+      return book.reviews.map(review => {
+        if (review.email === email) {
+          return res
+            .status(401)
+            .send('You have already created a review for this book.')
+        }
+      })
+    }
+    await book.update({ reviews: [...book.reviews, req.body] })
+    res.status(201).send('New review created!')
+  } catch (error) {
+    next(error)
+  }
+})
+
 // ----ADMIN----
 
 router.post('/', async (req, res) => {
