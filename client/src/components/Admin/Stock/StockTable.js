@@ -8,8 +8,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import rows from '../../../FakeData/FakeData'
 import ModalBook from './ModalBook';
+import axios from 'axios';
 
 const columns = [
   { id: 'id', label: 'ID', minWidth: 10 },
@@ -30,8 +30,14 @@ const columns = [
 ];
 
 
-
 export default function StockTable() {
+
+  const [rows, setRows] = React.useState([]);
+
+React.useEffect(() =>{
+ axios.get('http://localhost:3001/books').then(res => { return setRows(res.data)})
+}, [])
+
 
   const [selectedRow, setSelectedRow] = React.useState("")
   const [page, setPage] = React.useState(0);

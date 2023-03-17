@@ -51,7 +51,13 @@ function Checkout() {
     }
     console.log(orderData)
     // ACA VA EL PEDIDO AXIOS CON orderData
-    message.success('Order placed! Thank you :)')
+    axios
+      .post('http://localhost:3001/orders/confirm', orderData)
+      .then(res => {
+        console.log(res.message)
+        message.success('Order placed! Thank you :)')
+      })
+      .catch(err => console.log(err))
   }
 
   return (

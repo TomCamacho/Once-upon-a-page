@@ -12,8 +12,9 @@ import {
   Container,
 } from '@mui/material'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
-
 import Input from '../../commons/Input/Input'
+import jwt_decode from 'jwt-decode'
+import { GoogleLogin } from '@react-oauth/google'
 import { logIn } from '../../store/user'
 
 const initialFormState = {
@@ -36,6 +37,44 @@ function Auth() {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
+  const handleGoogleSuccess = credentialResponse => {
+    const decoded = jwt_decode(credentialResponse.credential)
+    console.log(decoded)
+    if (signUp) {
+      axios
+        .post('http://localhost:3001/user/register', {
+          fullName: decoded.name,
+          email: decoded.email,
+          password: decoded.sub,
+          confirmPassword: decoded.sub,
+        })
+        .then(newUser => {
+          message.success(
+            `New user (${newUser.data.fullName}) created successfully!`
+          )
+          switchMode()
+        })
+        .catch(err => message.error(err.message))
+    } else {
+      axios
+        .post('http://localhost:3001/user/login', {
+          email: decoded.email,
+          password: decoded.sub,
+        })
+        .then(existingUser => {
+          dispatch(logIn(existingUser.data))
+
+          localStorage.setItem('profile', JSON.stringify(existingUser.data))
+
+          message.success(
+            `Successful login! Welcome back ${existingUser.data.fullName}`
+          )
+          navigate('/')
+        })
+        .catch(err => message.error(err.message))
+    }
+  }
+
   const handleSubmit = e => {
     e.preventDefault()
     if (signUp) {
@@ -45,7 +84,6 @@ function Auth() {
           message.success(
             `New user (${newUser.data.fullName}) created successfully!`
           )
-          // navigate('/login')
           switchMode()
         })
         .catch(err => message.error(err.message))
@@ -140,25 +178,33 @@ function Auth() {
           >
             {signUp ? 'Register' : 'Log In'}
           </Button>
-          <Grid container justifyContent="center">
-            <Grid item>
-              <Button
-                onClick={switchMode}
-                fullWidth
-                variant="outlined"
-                color="primary"
-                style={{
-                  marginTop: '1rem',
-                  backgroundColor: '#D2C4FB',
-                  color: 'white',
-                }}
-              >
-                {signUp
-                  ? 'Have an account? Log In'
-                  : "Don't have an account? Register"}
-              </Button>
-            </Grid>
-          </Grid>
+
+          <Button
+            onClick={switchMode}
+            fullWidth
+            variant="outlined"
+            color="primary"
+            style={{
+              marginTop: '1rem',
+              backgroundColor: '#D2C4FB',
+              color: 'white',
+            }}
+          >
+            {signUp
+              ? 'Have an account? Log In'
+              : "Don't have an account? Register"}
+          </Button>
+
+          <Button fullWidth sx={{ marginTop: '1rem' }}>
+            <GoogleLogin
+              onSuccess={credentialResponse => {
+                handleGoogleSuccess(credentialResponse)
+              }}
+              onError={() => {
+                message.error('Google login failed, try later')
+              }}
+            />
+          </Button>
         </form>
       </Paper>
     </Container>

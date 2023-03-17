@@ -7,6 +7,8 @@ import {
   Button,
   Rating,
 } from '@mui/material'
+import axios from 'axios'
+import { useParams } from 'react-router'
 
 const ReviewModal = ({ open, onClose }) => {
   // Date
@@ -16,19 +18,22 @@ const ReviewModal = ({ open, onClose }) => {
   const currentYear = today.getFullYear()
   // LocalStorage
   const localStorageUser = JSON.parse(localStorage.getItem('profile'))
+  // Params
+  const id = useParams().id
   // State
   const [reviewData, setReviewData] = useState({
     email: localStorageUser.email,
-    fullName: localStorageUser.fullName,
+    creator: localStorageUser.fullName,
     date: `${currentDay}-${currentMonth}-${currentYear}`,
     rating: 1,
-    review: '',
+    description: '',
   })
   // Handlers
   const handleSubmit = event => {
     event.preventDefault()
     console.log(reviewData)
     // ACA HAY QUE HACER EL PEDIDO AXIOS Y PASARLE EL OBJETO reviewData
+    axios.post(`http://localhost:3001/books/${id}`, reviewData)
     onClose()
   }
 
@@ -77,7 +82,7 @@ const ReviewModal = ({ open, onClose }) => {
             sx={{ mb: 2 }}
             value={reviewData.review}
             onChange={e =>
-              setReviewData({ ...reviewData, review: e.target.value })
+              setReviewData({ ...reviewData, description: e.target.value })
             }
           />
           <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>

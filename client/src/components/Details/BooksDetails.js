@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CardDetailsBook from '../../commons/Details/CardDetailsBook'
 import {
   Box,
@@ -13,6 +13,7 @@ import CardReviewBook from '../../commons/Details/CardReviewBook'
 import { useParams } from 'react-router'
 import seed from '../../FakeData/FakeData'
 import ReviewModal from '../ReviewModal/ReviewModal'
+import axios from 'axios'
 
 const BooksDetails = () => {
   // States
@@ -23,7 +24,7 @@ const BooksDetails = () => {
   const localStorageUser = JSON.parse(localStorage.getItem('profile'))
   // Params
   const params = useParams()
-  const id = params.id - 1
+  const id = params.id
   // Handlers
   const handleExpandClick = () => {
     setExpanded(!expanded)
@@ -34,7 +35,16 @@ const BooksDetails = () => {
   const handleClose = () => {
     setOpen(false)
   }
-
+const [arr, setArr] = useState({})
+const pedidoAxios = async () => {
+  const response = await axios.get(`http://localhost:3001/books/${id}`)
+  setArr(response.data)
+}
+  useEffect(() => {
+  pedidoAxios()
+  }, [])
+ console.log(arr)
+ if(arr !== {}){
   return (
     <Grid container spacing={3} justifyContent="center">
       <Box sx={{ display: { xs: 'block', md: 'block', lg: 'none' } }}>
@@ -213,6 +223,8 @@ const BooksDetails = () => {
       </Grid>
     </Grid>
   )
+ }
+  
 }
 
 export default BooksDetails

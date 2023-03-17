@@ -6,6 +6,7 @@ import cors from 'cors'
 
 import routes from './routes/index.js'
 import db from './sequelize/db/index.js'
+
 import { User, Book, Order, Author } from './sequelize/db/models/index.js'
 
 const app = express()

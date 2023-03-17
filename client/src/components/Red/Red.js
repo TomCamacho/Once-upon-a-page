@@ -1,22 +1,17 @@
 import React, { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { Box, Container, Grid, Link, Typography } from '@mui/material'
+import { Box, Container, Grid } from '@mui/material'
+import axios from 'axios'
+
+import Card from '../../commons/Card/Card.js'
 import FilterDesktop from "../Filters/FilterDesktop"
 
-import books from '../../FakeData/FakeData.js'
-import Card from '../../commons/Card/Card.js'
-
 const Red = () => {
-  // const [books, setBooks] = React.useState([]);
+  const [books, setBooks] = React.useState([])
   useEffect(() => {
-    // axios
-    //   .get(
-    //     "https://localhost:3001/books"
-    //   )
-    //   .then((res) => {
-    //     console.log(res.data);
-    //     return setBooks(res.data);
-    //   });
+    axios.get('http://localhost:3001/books').then(res => {
+      console.log(res.data)
+      return setBooks(res.data)
+    })
   }, [])
 
   return (

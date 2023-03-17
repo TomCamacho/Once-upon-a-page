@@ -42,6 +42,10 @@ class Book extends Model {
         type: DataTypes.ARRAY(DataTypes.STRING),
         allowNull: false,
       },
+      reviews: {
+        type: DataTypes.ARRAY(DataTypes.JSONB),
+        defaultValue: [],
+      },
     }
 
     return super.init(schema, {

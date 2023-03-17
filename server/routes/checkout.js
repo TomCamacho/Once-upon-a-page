@@ -24,30 +24,31 @@ router.get('/', async (req, res, next) => {
 })
 
 router.post('/confirm', async (req, res, next) => {
-  const { cartItems, totalQuantity, totalAmount } = req.body.cart
+  const { cart } = req.body
   const { fullName, email } = req.body.user
+  const { amount, quantity } = req.body
+  const { paymentData } = req.body
   try {
     const newOrder = await Order.create({
-      totalQuantity,
-      totalAmount,
+      quantity,
+      amount,
     })
     const dataUser = await User.findOne({
       where: {
         email,
       },
     })
+
     newOrder.setUser(dataUser)
 
-    cartItems.forEach(item => {
-      Book.findOne(
-        { where: { googleId: item.googleId } },
-        { include: { model: Order } }
-      )
+    cart.forEach(item => {
+      Book.findByPk(item.id, { include: { model: Order } })
         .then(book => {
+          console.log('BOOK', book)
           const { stock } = book
           const stockUpdated = stock - item.units
           Book.update(
-            { stock: stockUpdated},
+            { stock: stockUpdated },
             {
               where: { id: book.id },
               returning: true,

@@ -110,17 +110,17 @@ const Navbar = () => {
             >
               Log In
             </Button>
-            <IconButton
-              onClick={() => navigate('/cart')}
-              aria-label="Cart"
-              color="inherit"
-            >
-              <Badge badgeContent={reduxQuantity} color="error">
-                <ShoppingCartIcon style={{ color: '#F8FBFF' }} />
-              </Badge>
-            </IconButton>
           </div>
         )}
+        <IconButton
+          onClick={() => navigate('/cart')}
+          aria-label="Cart"
+          color="inherit"
+        >
+          <Badge badgeContent={reduxQuantity} color="error">
+            <ShoppingCartIcon style={{ color: '#F8FBFF' }} />
+          </Badge>
+        </IconButton>
       </Toolbar>
     </AppBar>
   )

@@ -26,6 +26,11 @@ const formatBookFromGoogle = book => ({
 })
 
 router.get('/', async (req, res) => {
+  console.log('===============================')
+  return Book.findAll().then(books => res.status(200).send(books))
+})
+
+router.get('/search/algo', async (req, res) => {
   let condition
   const { title, googleId } = req.query
   if (title) condition = { title: { [Op.iLike]: `%${title}%` } }
@@ -39,13 +44,13 @@ router.get('/:id', async (req, res) => {
     include: {
       model: Author,
       through: {
-        attributes: []
-      }
-    }
+        attributes: [],
+      },
+    },
   })
   const newAuthors = book.authors.map(author => author.name)
-  const {authors, ...dataToKeep} = book.dataValues
-  const bookToReturn = {...dataToKeep, authors: newAuthors}
+  const { authors, ...dataToKeep } = book.dataValues
+  const bookToReturn = { ...dataToKeep, authors: newAuthors }
   return res.status(200).send(bookToReturn)
 })
 
@@ -81,18 +86,39 @@ router.get('/volume/:id', async (req, res) => {
 //     .catch(error => console.log(error))
 // })
 
+router.post('/:id', validateAuth, async (req, res, next) => {
+  const { email } = req.body
+  try {
+    const book = await Book.findByPk(req.params.id)
+    if (book.reviews.length !== 0) {
+      return book.reviews.map(review => {
+        if (review.email === email) {
+          return res
+            .status(401)
+            .send('You have already created a review for this book.')
+        }
+      })
+    }
+    await book.update({ reviews: [...book.reviews, req.body] })
+    res.status(201).send('New review created!')
+  } catch (error) {
+    next(error)
+  }
+})
+
 // ----ADMIN----
 
-router.post('/', validateAuth, validateAdmin, async (req, res) => {
-  const { isbn, price, genres, googleId, stock } = req.body
-  const response = await fetch(apiBaseURL.concat(apiSearch, 'isbn:', isbn))
+router.post('/', async (req, res) => {
+  const { isbn, price, genres, stock } = req.body
+  const isbnSearch = '?q=isbn:'.concat(isbn)
+  const response = await fetch(apiBaseURL.concat(isbnSearch))
   const bookFromGoogle = await response.json()
   console.log(bookFromGoogle)
   const bookToAdd = await Book.create(
     formatBookFromGoogle({ ...bookFromGoogle.items[0], stock, price, genres }),
     { include: Author }
   )
-  res.status(201).send(bookToAdd)
+  return res.status(201).send(bookToAdd)
 })
 
 router.put('/:id', validateAuth, validateAdmin, async (req, res) => {
