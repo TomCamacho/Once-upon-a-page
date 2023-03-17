@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Modal, Box } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -8,32 +7,24 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import rows from '../../../FakeData/FakeData'
-import ModalBook from '../ModalBook/ModalBook';
+
+
+const rows = [
+  {id:1, fullname: "Administrador", email:"administrador@gmail.com", role: "admin"},
+  {id:2, fullname:"Usuario", email:"usuario@gmail.com", role:"user"},
+]
 
 const columns = [
   { id: 'id', label: 'ID', minWidth: 10 },
-  { id: 'title', label: 'Title', minWidth: 170 },
-  { id: 'stock', label: 'Stock', minWidth: 10 },
-  {
-    id: 'price',
-    label: 'Price',
-    minWidth: 10,
-    align: 'right',
-  },
-  {
-    id: 'hidden',
-    label: 'Hidden',
-    minWidth: 10,
-    align: 'right',
-  }
+  { id: 'fullname', label: 'Full Name', minWidth: 170 },
+  { id: 'email', label: 'Email', minWidth: 170 },
+  { id: 'role', label: 'Role', minWidth: 170 },
 ];
 
 
 
-export default function StockTable() {
+export default function UsersTable() {
 
-  const [selectedRow, setSelectedRow] = React.useState("")
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(20);
 
@@ -48,15 +39,6 @@ export default function StockTable() {
 
   const [open, setOpen] = React.useState(false);
 
-  const handleOpen = (e, row) => {
-    setSelectedRow(row)
-    setOpen(true);
-
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   return (
     <>
@@ -81,7 +63,7 @@ export default function StockTable() {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => {
                 return (
-                  <TableRow onClick={(e) => handleOpen(e,row)} hover role="checkbox" tabIndex={-1} key={row.code}>
+                  <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                     {columns.map((column) => {
                       const value = row[column.id];
                       return (
@@ -108,22 +90,6 @@ export default function StockTable() {
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
     </Paper>
-    <Modal open={open} onClose={handleClose}>
-    <Box
-      sx={{
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: 400,
-        bgcolor: 'background.paper',
-        boxShadow: 24,
-        p: 2,
-      }}
-    >
-      <ModalBook row={selectedRow}/>
-    </Box>
-  </Modal>
   </>
   );
 }

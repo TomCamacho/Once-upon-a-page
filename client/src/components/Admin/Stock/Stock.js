@@ -4,11 +4,10 @@ import Checkbox from '@mui/material/Checkbox'
 import Autocomplete from '@mui/material/Autocomplete'
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank'
 import CheckBoxIcon from '@mui/icons-material/CheckBox'
-import StockTable from '../StockTable/StockTable'
-import UserAdmin from '../UserAdmin/UserAdmin'
+import StockTable from './StockTable'
 import axios from 'axios'
 import { message } from 'antd'
- 
+
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />
 const checkedIcon = <CheckBoxIcon fontSize="small" />
 const categories = [
@@ -21,39 +20,40 @@ const categories = [
   { name: 'LGBT', id: 'lgbt' },
   { name: "Children's", id: 'children' },
   { name: 'Biography/Autobiography', id: 'biography' },
-  { name:   'Self-help', id: 'self-help' },
+  { name: 'Self-help', id: 'self-help' },
 ]
- 
-const AddForm = () => {
+
+const Stock = () => {
   const initialFormState = {
     isbn: '',
     genres: [],
     stock: '',
     price: '',
   }
- 
+
   const [formData, setFormData] = React.useState(initialFormState)
- 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    const newValue = (name === "stock" || name === "price") ? Number(value) : value;
+
+  const handleChange = e => {
+    const { name, value } = e.target
+    const newValue =
+      name === 'stock' || name === 'price' ? Number(value) : value
     setFormData({ ...formData, [e.target.name]: newValue })
   }
- 
-  const handleCheckboxChange = (option) => {
-    const currentIndex = formData.genres.indexOf(option);
-    const newSelectedOptions = [...formData.genres];
- 
+
+  const handleCheckboxChange = option => {
+    const currentIndex = formData.genres.indexOf(option)
+    const newSelectedOptions = [...formData.genres]
+
     if (currentIndex === -1) {
-      newSelectedOptions.push(option);
+      newSelectedOptions.push(option)
     } else {
-      newSelectedOptions.splice(currentIndex, 1);
+      newSelectedOptions.splice(currentIndex, 1)
     }
- 
-    setFormData({ ...formData, genres: newSelectedOptions });
-    console.log(newSelectedOptions);
-  };
- 
+
+    setFormData({ ...formData, genres: newSelectedOptions })
+    console.log(newSelectedOptions)
+  }
+
   const CheckboxesTags = () => {
     return (
       <Autocomplete
@@ -62,7 +62,7 @@ const AddForm = () => {
         id="checkboxes-tags-demo"
         options={categories}
         disableCloseOnSelect
-        getOptionLabel={(option) => option.name}
+        getOptionLabel={option => option.name}
         value={formData.genres}
         onChange={(_, value) => setFormData({ ...formData, genres: value })}
         renderOption={(props, option, { selected }) => (
@@ -74,32 +74,27 @@ const AddForm = () => {
               name="genres"
               value={option.name}
               onChange={() => {
-                handleCheckboxChange(option);
+                handleCheckboxChange(option)
               }}
             />
             {option.name}
           </li>
         )}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label="Genres" 
-          />
-        )}
+        renderInput={params => <TextField {...params} label="Genres" />}
       />
     )
   }
- 
+
   const [open, setOpen] = React.useState(false)
- 
+
   const handleOpen = () => {
     setOpen(true)
   }
- 
+
   const handleClose = () => {
     setOpen(false)
   }
- 
+
   const handleSubmit = event => {
     event.preventDefault()
     let finalGenre = formData.genres.map(genre => {
@@ -110,12 +105,17 @@ const AddForm = () => {
     message.success(`The book has been added`)
     handleClose()
   }
- 
+
   return (
     <>
-      <UserAdmin />
-      <Button onClick={handleOpen} variant="contained" color="primary" sx= {{display: "flex", ml:2 , mb: 2}}>
-        Add new product</Button>
+      <Button
+        onClick={handleOpen}
+        variant="contained"
+        color="primary"
+        sx={{ display: 'flex', ml: 2, mb: 2 }}
+      >
+        Add new product
+      </Button>
       <StockTable />
       <Modal
         open={open}
@@ -154,14 +154,14 @@ const AddForm = () => {
               sx={{ mb: 2 }}
               InputProps={{
                 inputProps: {
-                  pattern: "[0-9]*", 
-                  inputMode: "numeric",
+                  pattern: '[0-9]*',
+                  inputMode: 'numeric',
                 },
               }}
             />
- 
+
             {CheckboxesTags()}
- 
+
             <TextField
               name="stock"
               label="Stock"
@@ -171,8 +171,8 @@ const AddForm = () => {
               sx={{ mb: 2 }}
               InputProps={{
                 inputProps: {
-                  pattern: "[0-9]*", 
-                  inputMode: "numeric",
+                  pattern: '[0-9]*',
+                  inputMode: 'numeric',
                 },
               }}
             />
@@ -185,8 +185,8 @@ const AddForm = () => {
               sx={{ mb: 2 }}
               InputProps={{
                 inputProps: {
-                  pattern: "[0-9]*", 
-                  inputMode: "numeric", 
+                  pattern: '[0-9]*',
+                  inputMode: 'numeric',
                 },
               }}
             />
@@ -204,5 +204,5 @@ const AddForm = () => {
     </>
   )
 }
- 
-export default AddForm
+
+export default Stock
