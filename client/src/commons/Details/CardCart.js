@@ -97,9 +97,6 @@ const CartProduct = ({ product }) => {
             >
               {`USD ${(product.price / 100).toFixed(2)}`}
             </Typography>
-            <Typography variant="body1" color="text.secondary" component="p">
-              weight: {`${product.weight} gr.`}
-            </Typography>
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <IconButton aria-label="remove" onClick={handleRemove}>

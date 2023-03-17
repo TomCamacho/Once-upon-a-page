@@ -26,6 +26,7 @@ const formatBookFromGoogle = book => ({
 })
 
 router.get('/', async (req, res) => {
+  console.log('===============================')
   return Book.findAll().then(books => res.status(200).send(books))
 })
 

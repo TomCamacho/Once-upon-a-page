@@ -1,5 +1,5 @@
 import { Book, Author } from '../models/index.js'
-import books from './Books.json' assert {type: 'json'}
+import books from './Books.json' assert { type: 'json' }
 
 Book.bulkCreate(books, {
   include: Author,
@@ -11,6 +11,7 @@ Book.bulkCreate(books, {
     'description',
     'stock',
     'price',
+    'reviews',
   ],
   validate: true,
 })

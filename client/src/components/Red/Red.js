@@ -10,10 +10,6 @@ const Red = () => {
       console.log(res.data)
       return setBooks(res.data)
     })
-
-    axios
-      .get('http://localhost:3001/books/1')
-      .then(res => console.log(res.data))
   }, [])
 
   return (
