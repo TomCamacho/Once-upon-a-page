@@ -6,7 +6,7 @@ import cors from 'cors'
 
 import routes from './routes/index.js'
 import db from './sequelize/db/index.js'
-import models from './sequelize/db/models/index.js'
+import { User, Book, Order, Author } from './sequelize/db/models/index.js'
 
 const app = express()
 const PORT = process.env.PORT || 3001
@@ -32,10 +32,11 @@ db.sync({ force: true }).then(() => {
     password: 'admin',
     email: 'admin@gmail.com',
     admin: true,
-  })
-  console.log('Db connected')
-  app.listen(PORT, () => {
-    console.log(`Server listening at port ${PORT}`)
+  }).then(() => {
+    console.log('Db connected')
+    app.listen(PORT, () => {
+      console.log(`Server listening at port ${PORT}`)
+    })
   })
 })
 
