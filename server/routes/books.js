@@ -3,18 +3,15 @@ import { Router } from 'express'
 import { Op } from 'sequelize'
 
 import { validateAuth, validateAdmin } from '../middleware/auth.js'
-import { Book } from '../sequelize/db/models/index.js'
-
+import { Book, Author } from '../sequelize/db/models/index.js'
 const router = Router()
 
 const apiBaseURL = 'https://www.googleapis.com/books/v1/volumes/'
-const apiBaseURLISBN = 'https://www.googleapis.com/books/v1/volumes/?q=isbn:'
 const apiSearch = '?projection=lite&langRestrict=en&filter=paid-ebooks&q='
 
 const formatBookFromGoogle = book => ({
   googleId: book.id,
   title: book.volumeInfo.title,
-  authors: book.volumeInfo.authors,
   rating: book.volumeInfo.averageRating,
   images: [book.volumeInfo.imageLinks.thumbnail],
   pages: book.volumeInfo.pageCount,
@@ -23,35 +20,40 @@ const formatBookFromGoogle = book => ({
   language: book.volumeInfo.language,
   description: book.volumeInfo.description,
   stock: book.stock,
-  price: book.stock,
+  price: book.price,
   genres: book.genres,
-})
-
-const formatBookFromGoogleByISBN = book => ({
-  googleId: book.items[0].id,
-  title: book.items[0].volumeInfo.title,
-  authors: book.items[0].volumeInfo.authors,
-  rating: book.items[0].volumeInfo.averageRating,
-  images: [book.items[0].volumeInfo.imageLinks.thumbnail],
-  pages: book.items[0].volumeInfo.pageCount,
-  publishingHouse: book.items[0].volumeInfo.publisher,
-  published: book.items[0].volumeInfo.publishedDate,
-  language: book.items[0].volumeInfo.language,
-  description: book.items[0].volumeInfo.description,
-  stock: book.stock,
-  price: book.stock,
-  genres: book.genres,
+  authors: book.volumeInfo.authors.map(authorName => ({ name: authorName })),
 })
 
 router.get('/', async (req, res) => {
+  return Book.findAll().then(books => res.status(200).send(books))
+})
+
+router.get('/search/algo', async (req, res) => {
   let condition
   const { title, googleId } = req.query
   if (title) condition = { title: { [Op.iLike]: `%${title}%` } }
   if (googleId) condition = { googleId }
-  const books = await Book.findAll({ where: condition }, { include: 'Genre' })
+  const books = await Book.findAll({ where: condition }, { include: 'Author' })
   return res.status(200).send(books)
 })
 
+router.get('/:id', async (req, res) => {
+  const book = await Book.findByPk(req.params.id, {
+    include: {
+      model: Author,
+      through: {
+        attributes: [],
+      },
+    },
+  })
+  const newAuthors = book.authors.map(author => author.name)
+  const { authors, ...dataToKeep } = book.dataValues
+  const bookToReturn = { ...dataToKeep, authors: newAuthors }
+  return res.status(200).send(bookToReturn)
+})
+
+// búsqueda por query a la api de google
 router.get('/search/:textToSearch', async (req, res) => {
   const { textToSearch } = req.params
   const response = await fetch(apiBaseURL.concat(apiSearch, textToSearch))
@@ -60,6 +62,7 @@ router.get('/search/:textToSearch', async (req, res) => {
   res.status(200).send(booksForClient)
 })
 
+// consulta de volumen particular a la api de google
 router.get('/volume/:id', async (req, res) => {
   const { id } = req.params
   const response = await fetch(apiBaseURL.concat(id))
@@ -67,19 +70,20 @@ router.get('/volume/:id', async (req, res) => {
   res.status(200).send(formatBookFromGoogle(book))
 })
 
-router.get('/:genre', (req, res) => {
-  const { genre } = req.params
-  console.log(genre)
-  Book.findAll({
-    where: {
-      genres: {
-        [Op.overlap]: [genre],
-      },
-    },
-  })
-    .then(books => res.status(200).send(books))
-    .catch(error => console.log(error))
-})
+// TODO nunca va a llegar acá por overlap de rutas
+// router.get('/:genre', (req, res) => {
+//   const { genre } = req.params
+//   console.log(genre)
+//   Book.findAll({
+//     where: {
+//       genres: {
+//         [Op.overlap]: [genre],
+//       },
+//     },
+//   })
+//     .then(books => res.status(200).send(books))
+//     .catch(error => console.log(error))
+// })
 
 router.post('/:id', validateAuth, async (req, res, next) => {
   const { email } = req.body
@@ -103,15 +107,17 @@ router.post('/:id', validateAuth, async (req, res, next) => {
 
 // ----ADMIN----
 
-router.post('/', validateAuth, validateAdmin, async (req, res) => {
-  const { isbn, stock, price, genres } = req.body
-  const response = await fetch(apiBaseURLISBN.concat(isbn))
-  const book = await response.json()
-  console.log(book)
+router.post('/', async (req, res) => {
+  const { isbn, price, genres, stock } = req.body
+  const isbnSearch = '?q=isbn:'.concat(isbn)
+  const response = await fetch(apiBaseURL.concat(isbnSearch))
+  const bookFromGoogle = await response.json()
+  console.log(bookFromGoogle)
   const bookToAdd = await Book.create(
-    formatBookFromGoogleByISBN({ ...book, stock, price, genres })
+    formatBookFromGoogle({ ...bookFromGoogle.items[0], stock, price, genres }),
+    { include: Author }
   )
-  res.status(201).send(bookToAdd)
+  return res.status(201).send(bookToAdd)
 })
 
 router.put('/:id', validateAuth, validateAdmin, async (req, res) => {
