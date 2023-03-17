@@ -58,7 +58,7 @@ router.get('/search/:textToSearch', async (req, res) => {
   res.status(200).send(booksForClient)
 })
 
-// consulta de volumen particular a la api de google
+// consulta de volumen  particular a la api de google
 router.get('/volume/:id', async (req, res) => {
   const { id } = req.params
   const response = await fetch(apiBaseURL.concat(id))
@@ -66,34 +66,35 @@ router.get('/volume/:id', async (req, res) => {
   res.status(200).send(formatBookFromGoogle(book))
 })
 
-// TODO nunca va a llegar acá por overlap de rutas
-// router.get('/:genre', (req, res) => {
-//   const { genre } = req.params
-//   console.log(genre)
-//   Book.findAll({
-//     where: {
-//       genres: {
-//         [Op.overlap]: [genre],
-//       },
-//     },
-//   })
-//     .then(books => res.status(200).send(books))
-//     .catch(error => console.log(error))
-// })
+router.get('/:genre', (req, res) => {
+  const { genre } = req.params
+  console.log(genre)
+  Book.findAll({
+    where: {
+      genres: {
+        [Op.overlap]: [genre],
+      },
+    },
+  })
+    .then(books => res.status(200).send(books))
+    .catch(error => console.log(error))
+})
 
 // ----ADMIN----
 
 router.post('/', validateAuth, validateAdmin, async (req, res) => {
   const { isbn, price, genres, googleId, stock } = req.body
-  const response = await fetch(apiBaseURL.concat(apiSearch, 'isbn:', isbn))
+  const isbnSearch = '?q=isbn:'.concat(isbn)
+  const response = await fetch(apiBaseURL.concat(isbnSearch))
   const bookFromGoogle = await response.json()
-  console.log(bookFromGoogle)
   const bookToAdd = await Book.create(
     formatBookFromGoogle({ ...bookFromGoogle.items[0], stock, price, genres }),
     { include: Author }
   )
   res.status(201).send(bookToAdd)
 })
+
+
 
 router.put('/:id', validateAuth, validateAdmin, async (req, res) => {
   const { id } = req.params
