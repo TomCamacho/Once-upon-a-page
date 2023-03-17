@@ -8,8 +8,7 @@ import FilterDesktop from "../Filters/FilterDesktop"
 const Red = () => {
   const [books, setBooks] = React.useState([])
   useEffect(() => {
-    axios.get('http://localhost:3001/books').then(res => {
-      console.log(res.data)
+    axios.get('/books').then(res => {
       return setBooks(res.data)
     })
   }, [])

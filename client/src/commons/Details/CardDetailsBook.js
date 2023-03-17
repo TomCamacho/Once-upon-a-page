@@ -5,7 +5,6 @@ import { useDispatch } from 'react-redux'
 import { message } from 'antd'
 
 const CardDetailsBook = ({ data }) => {
-  console.log(data)
   // Redux
   const dispatch = useDispatch()
   // Handlers

@@ -8,7 +8,7 @@ const SearchForm = () => {
   const breakpoints = theme.breakpoints.values
 
   const handleClick = () => {
-    console.log("se hubo un click ")
+    // console.log("se hubo un click ")
   }
 
   return (

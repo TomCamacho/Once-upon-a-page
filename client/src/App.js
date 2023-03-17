@@ -18,7 +18,6 @@ function App() {
         <Route path="/login" element={<Auth />} />
         <Route path="/register" element={<Auth />} />
         <Route path="/user/:id" element={<UserData/>}/>
-        <Route path="/books">BOOKS</Route>
         <Route path="/book/:id" element={<BooksDetails />}>
           SINGLE BOOK
         </Route>

@@ -46,6 +46,9 @@ class Book extends Model {
         type: DataTypes.ARRAY(DataTypes.JSONB),
         defaultValue: [],
       },
+      rating: {
+        type: DataTypes.SMALLINT
+      }
     }
 
     return super.init(schema, {

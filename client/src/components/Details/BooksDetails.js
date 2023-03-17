@@ -11,7 +11,6 @@ import {
 } from '@mui/material'
 import CardReviewBook from '../../commons/Details/CardReviewBook'
 import { useParams } from 'react-router'
-import seed from '../../FakeData/FakeData'
 import ReviewModal from '../ReviewModal/ReviewModal'
 import axios from 'axios'
 
@@ -35,22 +34,25 @@ const BooksDetails = () => {
   const handleClose = () => {
     setOpen(false)
   }
-const [arr, setArr] = useState({})
-const pedidoAxios = async () => {
-  const response = await axios.get(`http://localhost:3001/books/${id}`)
-  setArr(response.data)
-}
+  const [book, setBook] = useState({ authors: [], description: '', images: [] })
   useEffect(() => {
-  pedidoAxios()
+    let ignore = false
+    const fetchData = async () => {
+      const response = await axios.get(`/books/${id}`)
+      if (!ignore) setBook(response.data)
+    }
+    fetchData()
+    return () => {
+      ignore = true
+    }
   }, [])
- console.log(arr)
- if(arr !== {}){
+  console.log(book)
   return (
     <Grid container spacing={3} justifyContent="center">
       <Box sx={{ display: { xs: 'block', md: 'block', lg: 'none' } }}>
         <Grid marginTop="50px" item xs={12} md={12}>
           <Box display="flex" justifyContent="center" mb={2}>
-            <CardDetailsBook data={seed[id]} />
+            <CardDetailsBook data={book} />
           </Box>
         </Grid>
       </Box>
@@ -64,7 +66,7 @@ const pedidoAxios = async () => {
       >
         <Grid marginTop="50px" item xs={12}>
           <Box display="flex" justifyContent="center" mb={2}>
-            <CardDetailsBook data={seed[id]} />
+            <CardDetailsBook data={book} />
           </Box>
         </Grid>
       </Box>
@@ -77,9 +79,9 @@ const pedidoAxios = async () => {
         sx={{ maxWidth: '800px', marginLeft: '40px', marginRight: '40px' }}
       >
         <Box mb={2}>
-          <Typography variant="h4">{seed[id].title}</Typography>
+          <Typography variant="h4">{book.title}</Typography>
           <Typography variant="body1" component="div">
-            {seed[id].authors.map((author, index) => (
+            {book.authors.map((author, index) => (
               <React.Fragment key={index}>
                 <Link
                   href={`/${author}`}
@@ -91,7 +93,7 @@ const pedidoAxios = async () => {
                 >
                   {author}
                 </Link>
-                {index < seed[id].authors.length - 1 ? ', ' : ''}
+                {index < book.authors.length - 1 ? ', ' : ''}
               </React.Fragment>
             ))}
           </Typography>
@@ -110,12 +112,7 @@ const pedidoAxios = async () => {
             },
           }}
         >
-          <Rating
-            value={seed[id].rating}
-            readOnly
-            precision={0.1}
-            size="medium"
-          />
+          <Rating value={book.rating} readOnly precision={0.1} size="medium" />
           <Typography
             variant="h4"
             component="div"
@@ -124,19 +121,19 @@ const pedidoAxios = async () => {
               fontSize: '1.25rem',
             }}
           >
-            {seed[id].rating}
+            {book.rating}
           </Typography>
         </Box>
         <Box mb={2}>
           <Typography variant="h5">Description</Typography>
           <Typography variant="body1" color="text.secondary">
             {showMore
-              ? seed[id].description
-              : `${seed[id].description.substring(0, 150)}...`}
+              ? book.description
+              : `${book.description.substring(0, 150)}...`}
           </Typography>
         </Box>
         <Box>
-          {seed[id].description.length > 150 && (
+          {book.description.length > 150 && (
             <Link
               component="button"
               variant="body2"
@@ -154,8 +151,8 @@ const pedidoAxios = async () => {
         >
           <Typography variant="h5">Genres</Typography>
           <Box display="flex">
-            {seed[id].genres &&
-              seed[id].genres.map((genre, i) => (
+            {book.genres &&
+              book.genres.map((genre, i) => (
                 <Typography
                   key={i}
                   variant="body1"
@@ -170,13 +167,13 @@ const pedidoAxios = async () => {
         <Box mb={2}>
           <Typography variant="h5">Details:</Typography>
           <Typography variant="body1" color="text.secondary">
-            Number of pages: {seed[id].pages}
+            Number of pages: {book.pages}
           </Typography>
           <Typography variant="body1" color="text.secondary">
-            Publishing house: {seed[id].publishingHouse}
+            Publishing house: {book.publishingHouse}
           </Typography>
           <Typography variant="body1" color="text.secondary">
-            weight: {seed[id].weight} gr.
+            weight: {book.weight} gr.
           </Typography>
         </Box>
         <Box mb={2}>
@@ -196,7 +193,7 @@ const pedidoAxios = async () => {
           ) : (
             ''
           )}
-          {seed[id].reviews && seed[id].reviews.length > 0 ? (
+          {book.reviews && book.reviews.length > 0 ? (
             <Box>
               <Button
                 variant="outlined"
@@ -207,7 +204,7 @@ const pedidoAxios = async () => {
                 {expanded ? 'Hide Reviews' : 'Show Reviews'}
               </Button>
               <Collapse in={expanded} timeout="auto" unmountOnExit>
-                {seed[id].reviews.map(review => (
+                {book.reviews.map(review => (
                   <Box key={review.id} mb={2}>
                     <CardReviewBook review={review} />
                   </Box>
@@ -223,8 +220,6 @@ const pedidoAxios = async () => {
       </Grid>
     </Grid>
   )
- }
-  
 }
 
 export default BooksDetails

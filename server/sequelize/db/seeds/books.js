@@ -12,6 +12,7 @@ Book.bulkCreate(books, {
     'stock',
     'price',
     'reviews',
+    'rating'
   ],
   validate: true,
 })

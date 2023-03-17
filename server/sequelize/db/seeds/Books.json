@@ -9,7 +9,17 @@
     "stock": 1,
     "price": 5000,
     "genres": ["fiction"],
-    "authors": [{ "name": "Madeline Miller" }]
+    "authors": [{ "name": "Madeline Miller" }],
+    "reviews": [
+      {
+        "rating": 3.2,
+        "creator": "Luciano Chiarelli",
+        "description": "excelente libro",
+        "email": "cualquier@mail.com",
+        "date": "2023-03-16"
+      }
+    ],
+    "rating": 5
   },
   {
     "googleId": "BcG2dVRXKukC",
@@ -25,7 +35,17 @@
       {
         "name": "Patrick Rothfuss"
       }
-    ]
+    ],
+    "reviews": [
+      {
+        "rating": 5,
+        "creator": "Luciano Chiarelli",
+        "description": "excelente libro",
+        "email": "cualquier@mail.com",
+        "date": "2023-03-16"
+      }
+    ],
+    "rating": 1
   },
   {
     "googleId": "hVEwEAAAQBAJ",
@@ -41,7 +61,17 @@
       {
         "name": "Travis Klune"
       }
-    ]
+    ],
+    "reviews": [
+      {
+        "rating": 5,
+        "creator": "Luciano Chiarelli",
+        "description": "excelente libro",
+        "email": "cualquier@mail.com",
+        "date": "2023-03-16"
+      }
+    ],
+    "rating": 4
   },
   {
     "googleId": "kotPYEqx7kMC",
@@ -57,7 +87,17 @@
       {
         "name": "George Orwell"
       }
-    ]
+    ],
+    "reviews": [
+      {
+        "rating": 5,
+        "creator": "Luciano Chiarelli",
+        "description": "excelente libro",
+        "email": "cualquier@mail.com",
+        "date": "2023-03-16"
+      }
+    ],
+    "rating": 5
   },
   {
     "googleId": "k3ZtZcOnWrsC",
@@ -73,7 +113,17 @@
       {
         "name": "Nick Hornby"
       }
-    ]
+    ],
+    "reviews": [
+      {
+        "rating": 5,
+        "creator": "Luciano Chiarelli",
+        "description": "excelente libro",
+        "email": "cualquier@mail.com",
+        "date": "2023-03-16"
+      }
+    ],
+    "rating": 5
   },
   {
     "googleId": "trpSpjQjg_cC",
@@ -89,7 +139,17 @@
       {
         "name": "Sun Tzu"
       }
-    ]
+    ],
+    "reviews": [
+      {
+        "rating": 5,
+        "creator": "Luciano Chiarelli",
+        "description": "excelente libro",
+        "email": "cualquier@mail.com",
+        "date": "2023-03-16"
+      }
+    ],
+    "rating": 2
   },
   {
     "googleId": "daYpBQAAQBAJ",
@@ -99,13 +159,23 @@
     ],
     "description": "Featuring the entirety of Oscar Wilde’s collected poetry, prose, and dramatic works, this collection demonstrates the author’s wide range, unerring wit, and unique perspective. Bringing together Wilde’s most famous works, including The Picture of Dorian Gray, The Importance of Being Earnest, and Lady Windermere’s Fan, this anthology is an important resource for any fan or student of Oscar Wilde. Often considered ahead of his time, Oscar Wilde’s works continue to resonate with modern readers and many have been adapted for film and television, including most recently, the 2009 film Dorian Gray starring Ben Barnes and the 2002 film The Importance of Being Earnest, starring Judi Dench and Colin Firth. HarperPerennial Classics brings great works of literature to life in digital format, upholding the highest standards in ebook production and celebrating reading in all its forms. Look for more titles in the HarperPerennial Classics collection to build your digital library.",
     "stock": 1,
-    "price": 5000,
+    "price": 4323,
     "genres": ["fiction", "poetry"],
     "authors": [
       {
         "name": "Oscar Wilde"
       }
-    ]
+    ],
+    "reviews": [
+      {
+        "rating": 5,
+        "creator": "Luciano Chiarelli",
+        "description": "excelente libro",
+        "email": "cualquier@mail.com",
+        "date": "2023-03-16"
+      }
+    ],
+    "rating": 5
   },
   {
     "googleId": "Sv07EAAAQBAJ",
@@ -121,6 +191,16 @@
       {
         "name": "Oscar Wilde"
       }
-    ]
+    ],
+    "reviews": [
+      {
+        "score": 5,
+        "author": "Luciano Chiarelli",
+        "content": "excelente libro",
+        "email": "cualquier@mail.com",
+        "createdAt": "2023-03-16"
+      }
+    ],
+    "rating": 4
   }
 ]

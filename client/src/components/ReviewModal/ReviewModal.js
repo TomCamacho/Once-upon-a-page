@@ -31,9 +31,9 @@ const ReviewModal = ({ open, onClose }) => {
   // Handlers
   const handleSubmit = event => {
     event.preventDefault()
-    console.log(reviewData)
+    // console.log(reviewData)
     // ACA HAY QUE HACER EL PEDIDO AXIOS Y PASARLE EL OBJETO reviewData
-    axios.post(`http://localhost:3001/books/${id}`, reviewData)
+    axios.post(`/books/${id}`, reviewData)
     onClose()
   }
 
