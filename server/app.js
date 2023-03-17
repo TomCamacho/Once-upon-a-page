@@ -6,7 +6,7 @@ import cors from 'cors'
 
 import routes from './routes/index.js'
 import db from './sequelize/db/index.js'
-import models from './sequelize/db/models/index.js'
+import { Book, User, Order } from './sequelize/db/models/index.js'
 
 const app = express()
 const PORT = process.env.PORT || 3001
