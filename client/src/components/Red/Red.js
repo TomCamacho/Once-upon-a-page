@@ -1,20 +1,19 @@
 import React, { useEffect } from 'react'
 import { Box, Container, Grid } from '@mui/material'
-
-import books from '../../FakeData/FakeData.js'
+import axios from 'axios'
 import Card from '../../commons/Card/Card.js'
 
 const Red = () => {
-  // const [books, setBooks] = React.useState([]);
+  const [books, setBooks] = React.useState([])
   useEffect(() => {
-    // axios
-    //   .get(
-    //     "https://localhost:3001/books"
-    //   )
-    //   .then((res) => {
-    //     console.log(res.data);
-    //     return setBooks(res.data);
-    //   });
+    axios.get('http://localhost:3001/books').then(res => {
+      console.log(res.data)
+      return setBooks(res.data)
+    })
+
+    axios
+      .get('http://localhost:3001/books/1')
+      .then(res => console.log(res.data))
   }, [])
 
   return (

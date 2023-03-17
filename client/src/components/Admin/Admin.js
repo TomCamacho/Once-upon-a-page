@@ -7,8 +7,7 @@ import Box from '@mui/material/Box';
 import Orders from './Orders/Orders'
 
 
-const Admin = ({id}) => {
-    console.log("ID", id)
+const Admin = () => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5, maxWidth: '80%', margin: '0 auto' }}>
         <UserAdmin />

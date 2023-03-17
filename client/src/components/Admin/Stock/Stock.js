@@ -36,7 +36,9 @@ const Stock = () => {
   const handleChange = e => {
     const { name, value } = e.target
     const newValue =
-      name === 'stock' || name === 'price' ? Number(value) : value
+      name === 'stock' || name === 'price' || name === 'isbn'
+        ? Number(value)
+        : value
     setFormData({ ...formData, [e.target.name]: newValue })
   }
 
@@ -51,7 +53,6 @@ const Stock = () => {
     }
 
     setFormData({ ...formData, genres: newSelectedOptions })
-    console.log(newSelectedOptions)
   }
 
   const CheckboxesTags = () => {
@@ -97,11 +98,12 @@ const Stock = () => {
 
   const handleSubmit = event => {
     event.preventDefault()
-    let finalGenre = formData.genres.map(genre => {
+    const finalGenre = formData.genres.map(genre => {
       return genre.name
     })
     formData.genres = finalGenre
-    axios.post(`http://localhost:3001/books`, formData)
+
+    axios.post(`http://localhost:3001/books`, formData).then(res => console.log(res.data))
     message.success(`The book has been added`)
     handleClose()
   }
@@ -148,7 +150,7 @@ const Stock = () => {
             <TextField
               onChange={handleChange}
               name="isbn"
-              label="ISBM"
+              label="ISBN"
               fullWidth
               required
               sx={{ mb: 2 }}
